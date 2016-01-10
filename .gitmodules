@@ -1,0 +1,12 @@
+[submodule "django_podio"]
+	path = django_podio
+	url = https://github.com/camiloforero/django_podio.git
+[submodule "django_expa"]
+	path = django_expa
+	url = https://github.com/camiloforero/django_expa.git
+[submodule "django_documents"]
+	path = django_documents
+	url = https://github.com/camiloforero/django_documents.git
+[submodule "django_mailTemplates"]
+	path = django_mailTemplates
+	url = https://github.com/camiloforero/django_mailTemplates.git
