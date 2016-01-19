@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+        <meta name="description" content="Yellow Platform">
+        <meta name="author" content="Camilo Forero">
+        <title>{% block title %}untitled{% endblock %} - Yellow Platform</title>
+        <link rel="icon" href="/static/favicon.png" type="image/png" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="{% static "yellowPlatform/css/style.css"%}"/>
+        {% if request.user.username == 'JU' %}
+        <style>
+        body {
+            font-family: "Comic Sans Ms", "nexa", Verdana, sans-serif !important;
+        }
+        </style>
+        {% endif %}
+    </head>
+
+    <body class="{% block body-class %} emptyBody {% endblock %}">
+
+{% comment %}
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <header class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <a class="navbar-brand" href="/app/">Natco2015</a>
+        </header>
+        <div class="navbar-collapse collapse">
+            <menu class="nav navbar-nav navbar-right">
+                <li><a href="/app/patrocinadores/">Patrocinadores</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'scheduler:feedback_individual' %}">Mi feedback</a></li>
+                <li><a href="{% url 'scheduler:horario' %}">Mi horario</a></li>
+                {% if user.persona.rol.esConference %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'scheduler:check_in_status' %}">Check in</a></li>
+                        <li><a href="{% url 'scheduler:horario_admin' %}">Horario general</a></li>
+                        <li><a href="{% url 'scheduler:lista_habitaciones' %}">Habitaciones</a></li>
+                        <li><a href="{% url 'scheduler:buses' %}">Ver buses</a></li>
+                        <li><a href="{% url 'scheduler:lista_inscritos_eventos' %}">Cantidad de inscritos a eventos</a></li>
+                        <li><a href="{% url 'scheduler:lista_lcs_inscritos_eventos' %}">Personas inscritas</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'scheduler:horarios_vpm' %}">Horarios VPM</a></li>
+                {% else %}
+                    <li><a href="{% url 'scheduler:lista_inscribir_evento' %}">Inscribir eventos</a></li>
+                    {% if user.persona.esJD %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">JDD Admin<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="{% url 'scheduler:lista_lcs_inscritos_eventos' %}">Ver inscritos a eventos</a></li>
+                        <!-- <li><a href="{% url 'scheduler:feedback' %}">Feedback</a></li> -->
+                        </ul>
+                    </li>
+                    {% endif %}
+                {% endif %}
+                <li><a href="{% url 'scheduler:networking' %}">Networking</a></li>
+                <li><a href="{% url 'scheduler:logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'scheduler:login' %}">Login</a></li>
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+    </nav>
+{% endcomment %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 main">
+    <header> 
+        <h1>{% block page-header %}empty header{% endblock %}</h1>
+    </header>
+                <main>
+                    {% block body %}<h3>Si estás viendo esto, no estás reemplazando el body_block de manera apropiada</h3>{% endblock %}
+                </main>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    {% block scripts%}
+    {% endblock %}
+    </body>
+</html>
