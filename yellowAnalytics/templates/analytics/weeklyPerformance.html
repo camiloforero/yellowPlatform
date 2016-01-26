@@ -1,0 +1,32 @@
+{% extends 'yellowPlatform/base.html' %}
+{% load staticfiles %}
+{% block title %}Desempeño mensual de AIESEC {{lc}}{% endblock %}
+{% block page-header %}Desempeño durante el año 2016{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+
+{% for program, performance in programs.items %}
+        <h1>{{program}}.</h1> Total match: {{performance.totals.MATOTAL}}. Total realizaciones: {{performance.totals.RETOTAL}}
+        <table class="table table-responsive table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>KPI</th>
+                    {% for weekNumber in performance.RE %}
+                    <th>Semana {{forloop.counter}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for program, weeks in performance.weekly.items %}
+            <tr>
+                <td>{{program}}</td>
+                {% for week in weeks %}
+                <td>{{week}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
+{% block scripts %}{% endblock %}

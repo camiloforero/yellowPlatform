@@ -21,6 +21,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^podio/', include('django_podio.urls', namespace='podio')),
     url(r'^expa/', include('django_expa.urls', namespace='expa')),
+    url(r'^analytics/', include('yellowAnalytics.urls', namespace='analytics')),
     url(r'^admin/', include(admin.site.urls)),
 
 ]

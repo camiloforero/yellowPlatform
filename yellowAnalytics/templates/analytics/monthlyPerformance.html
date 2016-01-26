@@ -1,0 +1,41 @@
+{% extends 'yellowPlatform/base.html' %}
+{% load staticfiles %}
+{% block title %}Desempeño mensual de AIESEC {{lc}}{% endblock %}
+{% block page-header %}Desempeño año {{anho}}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+
+{% for program, performance in programs.items %}
+        <h1>{{program}}</h1>
+        <table class="table table-responsive table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>Programa</th>
+                    <th>Enero</th>
+                    <th>Febrero</th>
+                    <th>Marzo</th>
+                    <th>Abril</th>
+                    <th>Mayo</th>
+                    <th>Junio</th>
+                    <th>Julio</th>
+                    <th>Agosto</th>
+                    <th>Septiembre</th>
+                    <th>Octubre</th>
+                    <th>Noviembre</th>
+                    <th>Diciembre</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for program, months in performance.items %}
+            <tr>
+                <td>{{program}}</td>
+                {% for month in months %}
+                <td>{{month}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
+{% block scripts %}{% endblock %}

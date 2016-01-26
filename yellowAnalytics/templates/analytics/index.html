@@ -1,0 +1,18 @@
+{% extends 'yellowPlatform/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Analytics{% endblock %}
+{% block page-header %}Analytics{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<p>Bienvenido al módulo de Analytics de la yellow platform. Selecciona la funcionalidad que necesites ver</p>
+<ul>
+    <li><a href="{% url 'analytics:yearly_performance' %}">Performance del LC en el año 2015</a></li>
+    <li><a href="{% url 'analytics:scoreboard' %}">Performance semanal</a></li>
+    <li><a href="{% url 'analytics:ranking_latam' 'ogcdp'%}">Ranking LATAM ogcdp</a></li>
+    <li><a href="{% url 'analytics:ranking_latam' 'igcdp'%}">Ranking LATAM igcdp</a></li>
+    <li><a href="{% url 'analytics:ranking_latam' 'ogip'%}">Ranking LATAM ogip</a></li>
+    <li><a href="{% url 'analytics:ranking_latam' 'igip'%}">Ranking LATAM igip</a></li>
+</ul>
+{% endblock %}
+{% block scripts %}{% endblock %}

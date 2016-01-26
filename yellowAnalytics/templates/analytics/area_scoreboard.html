@@ -1,0 +1,26 @@
+{% extends 'yellowPlatform/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{% endblock %}
+{% block page-header %}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<div id="chart_div"></div>
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawchart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable( {{results}} );
+        var options = {
+            title: 'Desempeño organizacional',
+            hAxis: {title: 'var1', titleTextStyle: {color: '#333'}},
+            vaAxis: {minValue: 0}
+        };
+        var chart = new google.visualization.AreaChart(document.getElementByID('chart_div'));
+    }
+</script>
+{% endblock %}

@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_mailTemplates',
     'django_documents',
+    'yellowDatabase',
+    'yellowAnalytics',
 #    'debug_toolbar',
 
 ]
@@ -96,7 +98,12 @@ DATABASES = {
     }
 }
 
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11555',
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 

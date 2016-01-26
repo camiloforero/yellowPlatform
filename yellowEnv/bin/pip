@@ -1,4 +1,4 @@
-#!/var/www/natco2015/yellowEnv/bin/python
+#!/var/www/yellowPlatform/yellowEnv/bin/python
 
 # -*- coding: utf-8 -*-
 import re
