@@ -1,26 +1,101 @@
 {% extends 'yellowPlatform/base.html' %}
 {% load staticfiles %}
 
-{% block title %}{% endblock %}
-{% block page-header %}{% endblock %}
+{% block title %}Scoreboard {{program|upper}}{% endblock %}
+{% block page-header %}Scoreboard {{program|upper}}{% endblock %}
 {% block body-class %}{% endblock %}
 {% block body %}
+<p>Total matches: {{performance.totals.MATOTAL}}. Total realizaciones: {{performance.totals.RETOTAL}}</p>
+<h2>Ranking</h2>
+<p>Top matches: <a href="{% url 'analytics:ranking' programa=program ranking='global' metric='MA'%}">{{rankings.MA.global}} (Mundial).</a> <a href="{% url 'analytics:ranking' programa=program ranking='regional' metric='MA'%}">{{rankings.MA.regional}} (LATAM).</a> <a href="{% url 'analytics:ranking' programa=program ranking='national' metric='MA'%}">{{rankings.MA.national}} (Colombia).</a></p>
+<p>Top realizaciones: <a href="{% url 'analytics:ranking' programa=program ranking='global' metric='RE'%}">{{rankings.RE.global}} (Mundial).</a> <a href="{% url 'analytics:ranking' programa=program ranking='regional' metric='RE'%}">{{rankings.RE.regional}} (LATAM).</a> <a href="{% url 'analytics:ranking' programa=program ranking='national' metric='RE'%}">{{rankings.RE.national}} (Colombia).</a></p>
+<h2>Desempeño semanal:</h2>
+<table class="table table-responsive table-condensed table-hover">
+    <thead>
+        <tr>
+            <th>KPI</th>
+            {% for weekNumber in performance.weekly.RE %}
+            <th>Semana {{forloop.counter0}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for program, weeks in performance.weekly.items %}
+    <tr>
+        <td>{{program}}</td>
+        {% for week in weeks %}
+        <td>{{week}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 <div id="chart_div"></div>
+{% if uncontacted %}
+<h4>EPs sin contactar: {{uncontacted}}. <a href="https://experience.aiesec.org/#/people?registered%5Bfrom%5D=2016-01-01&contacted=false">Ver EPs</a></h4>
+{% endif %}
+<div row>
+{% if weekRegisteredAnalytics %}
+    <div class="col-md-6 col-sm-12">
+    <table class="table table-responsive table-striped table-hover">
+        <tr>
+           <td>Registrados</td>
+           <td>{{weekRegisteredAnalytics.total}}</td>
+        </tr> 
+        <tr>
+           <td>Contactados</td>
+           <td>{{weekRegisteredAnalytics.nContacted}}</td>
+        </tr> 
+        <tr>
+           <td>Porcentaje</td>
+           <td>{{weekRegisteredAnalytics.rate}}%</td>
+        </tr> 
+        <tr>
+           <td>Gap</td>
+           <td>{{weekRegisteredAnalytics.gap}}</td>
+        </tr> 
+    </table>
+    </div>
+{% endif %}
+{% if weekContactedAnalytics %}
+    <div class="col-md-6 col-sm-12">
+    <table class="table table-responsive table-striped table-hover">
+        <tr>
+           <td>Contactados</td>
+           <td>{{weekContactedAnalytics.total}}</td>
+        </tr> 
+        <tr>
+           <td>Entrevistados</td>
+           <td>{{weekContactedAnalytics.nContacted}}</td>
+        </tr> 
+        <tr>
+           <td>Porcentaje</td>
+           <td>{{weekContactedAnalytics.rate}}%</td>
+        </tr> 
+        <tr>
+           <td>Gap</td>
+           <td>{{weekContactedAnalytics.gap}}</td>
+        </tr> 
+    </table>
+    </div>
+{% endif %}
+</div>
 
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawchart);
+    google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-        var data = google.visualization.arrayToDataTable( {{results}} );
+        var data = google.visualization.arrayToDataTable( {{weeklyJSON|safe}} );
         var options = {
             title: 'Desempeño organizacional',
             hAxis: {title: 'var1', titleTextStyle: {color: '#333'}},
             vaAxis: {minValue: 0}
         };
-        var chart = new google.visualization.AreaChart(document.getElementByID('chart_div'));
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options)
     }
 </script>
 {% endblock %}

@@ -10,3 +10,6 @@
 [submodule "django_mailTemplates"]
 	path = django_mailTemplates
 	url = https://github.com/camiloforero/django_mailTemplates.git
+[submodule "django_gdocs"]
+	path = django_gdocs
+	url = https://github.com/camiloforero/django_gdocs.git

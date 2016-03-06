@@ -1,14 +1,14 @@
 # coding=utf-8
 from django.contrib import admin
-from .models import MetaPrograma, MetaSemana, LC
+from .models import MetaPrograma, MonthlyGoal, LC
 
 @admin.register(MetaPrograma)
 class MetaProgramaAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'metaTotal')
 
-@admin.register(MetaSemana)
-class MetaSemanaAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'meta')
+@admin.register(MonthlyGoal)
+class MonthlyGoalAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'MA', 'RE')
 
 @admin.register(LC)
 class LCAdmin(admin.ModelAdmin):

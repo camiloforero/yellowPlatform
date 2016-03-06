@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django_documents',
     'yellowDatabase',
     'yellowAnalytics',
+    'yellowTools',
+    'yellowVoting',
 #    'debug_toolbar',
 
 ]
@@ -62,7 +64,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware', #TODO: Modificar en caso que sea necesario para negar unas y aceptar a otras
 ]
 
 ROOT_URLCONF = 'yellowPlatform.urls'

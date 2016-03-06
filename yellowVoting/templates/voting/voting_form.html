@@ -1,0 +1,21 @@
+{% extends 'yellowPlatform/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{% endblock %}
+{% block page-header %}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<form action="#" method="post">
+{% csrf_token %}
+{% for mocion in mocionList %}
+<input type="text" name="codigo", placeholder="codigo"/>
+<h4>{{mocion.mocion.nombre}}</h4>
+<p>{{mocion.mocion.texto}}</p>
+{{mocion.votoForm.errors}}
+{{mocion.votoForm}}
+{% endfor %}
+    <input type="submit" value="Enviar"/>
+</form>
+
+{% endblock %}
+{% block scripts %}{% endblock %}

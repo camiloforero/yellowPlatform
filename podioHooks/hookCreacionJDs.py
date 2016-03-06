@@ -1,5 +1,5 @@
 # code TODO utf8
-from django_podio import api
+from django_podio import api, tools
 from django_documents import documentsApi
 
 from django.core.mail import EmailMessage
@@ -8,14 +8,6 @@ from django.utils.html import strip_tags
 import pdb
 
 def run(appID, params):
-    def dictSwitch(oldDict, transformer):
-        newDict = {}
-        for key, value in oldDict.iteritems():
-            try:
-                newDict[transformer[key]] = value
-            except KeyError:
-                newDict[key] = value
-        return newDict
     transformer = {
         'english-writing': 'writing', 
         'english-reading': 'reading',
@@ -42,7 +34,7 @@ def run(appID, params):
     podioApi = api.PodioApi(appID)
     item = podioApi.getItem(params['item_id'], no_html=True)
     
-    data = dictSwitch(item['values'], transformer)
+    data = tools.dictSwitch(item['values'], transformer)
     data['lider'] = item['values']['lider']['values']['title']
     data['area'] = item['values']['lider']['values']['nombre-del-cargo'].replace('LCVP ', "")
     data['horas_semanales'] = data['horas_semanales'].split('.')[0]
