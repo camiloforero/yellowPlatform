@@ -25,7 +25,7 @@ class GetUncontactedEPs(TemplateView):
     def get_context_data(self, **kwargs):
         api = expaApi.ExpaApi()
         context = super(GetUncontactedEPs, self).get_context_data(**kwargs)
-        eps = api.getUncontactedEPs()['eps']
+        eps = api.getUncontactedEPs(1395)['eps']
         context['personas'] = eps 
         return context
 

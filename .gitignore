@@ -1,3 +1,4 @@
 *.pyc
+*.swo
 yellowEnv
 google_private_key.json

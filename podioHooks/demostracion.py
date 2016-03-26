@@ -1,10 +1,10 @@
-# encoding:utf-8
+# code TODO utf8
 from django_podio import api
 import pdb
 
 def run(appID, params):
-    podioApi = api.PodioApi(appID)
-    item = podioApi.getItem(params['item_id'])
+    testApi = api.PodioApi(appID)
+    item = testApi.getItem(params['item_id'])
     pdb.set_trace()
 
     return 'success %s' % item['values']['mailprueba'] 

@@ -79,6 +79,22 @@
     </table>
     </div>
 {% endif %}
+    <table class="table table-responsive">
+        <tr>
+            <th>Mes</th>
+            <th>Planeado (ma)</th>
+            <th>Ejecutado (ma)</th>
+            <th>Planeado (re)</th>
+            <th>Ejecutado (re)</th>
+        </tr>
+        {% for achievement in monthly_achievements.monthly %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 
 {% endblock %}
@@ -91,7 +107,7 @@
         var data = google.visualization.arrayToDataTable( {{weeklyJSON|safe}} );
         var options = {
             title: 'Desempeño organizacional',
-            hAxis: {title: 'var1', titleTextStyle: {color: '#333'}},
+            hAxis: {title: 'semanas', titleTextStyle: {color: '#333'}},
             vaAxis: {minValue: 0}
         };
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));

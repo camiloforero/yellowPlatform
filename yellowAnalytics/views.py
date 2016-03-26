@@ -6,7 +6,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django_expa.expaApi import ExpaApi
-from .models import LC
+from .models import LC, MonthlyGoal
 from . import tools
 
 import json
@@ -72,12 +72,15 @@ class GetAreaScoreboard(TemplateView):
                 }
             }
         context.update(rankings)
+        #These analytics are related to the fulfillment of the current monthly goal
+        context['monthly_goals'] = MonthlyGoal.objects.filter(office=1395, program=programa.upper())
+        context['monthly_achievements'] = api.getProgramMonthlyPerformance(programa, 1395)
 
         if programa[0] == 'o': #Specific analytics for OGX
             #Context data for total uncontacted EPs
-            context['uncontacted'] = api.getUncontactedEPs()['total']
+            context['uncontacted'] = api.getUncontactedEPs(1395)['total']
             #Context data for Weekly registered/contacted and contacted/interviewed analytics
-            weekRegisteredEPs = api.getWeekRegistered()
+            weekRegisteredEPs = api.getWeekRegistered(1395)
             weekRegisteredContacted = 0
             for ep in weekRegisteredEPs['eps']:
                 if ep['contacted_at']:
@@ -92,7 +95,7 @@ class GetAreaScoreboard(TemplateView):
                 'rate':contacted_rate*100,
                 'gap':weekRegisteredContacted - weekRegisteredEPs['total']
             }
-            weekContactedEPs = api.getWeekContacted()
+            weekContactedEPs = api.getWeekContacted(1395)
             weekContactedInterviewed = 0
             for ep in weekContactedEPs['eps']:
                 if ep['interviewed']:
