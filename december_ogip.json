@@ -1,0 +1,239 @@
+{
+  "paging": {
+    "total_items": 2,
+    "current_page": 1,
+    "total_pages": 1
+  },
+  "data": [
+    {
+      "id": 1000129,
+      "url": "https://gis.aiesec.org/v2/applications/1000129",
+      "status": "realized",
+      "current_status": "realized",
+      "an_signed_at": "2015-11-17T21:46:03.726Z",
+      "favourite": true,
+      "person": {
+        "id": 733793,
+        "email": "miguels.moraf@utadeo.edu.co",
+        "url": "https://gis.aiesec.org/v2/people/733793",
+        "first_name": "Miguel Sebastian ",
+        "dob": "1993-05-19",
+        "full_name": "Miguel Sebastian  Mora Forero",
+        "last_name": "Mora Forero",
+        "home_lc": {
+          "id": 1395,
+          "name": "ANDES",
+          "country": "Colombia"
+        },
+        "interviewed": true,
+        "is_employee": null,
+        "permissions": {
+          "can_update": true,
+          "can_edit_managers": true,
+          "can_interview": true,
+          "can_view_applications": true,
+          "should_pay_at_apply": false,
+          "has_paid_for_apply": false,
+          "can_mark_apply_paid": true,
+          "can_mark_gep": false,
+          "can_apply": true
+        },
+        "profile_photo_url": "https://gis-img.s3.amazonaws.com/missing_profile_m.svg"
+      },
+      "opportunity": {
+        "id": 696714,
+        "title": "Brand Design & Communication - Venture Brazil",
+        "url": "https://gis.aiesec.org/v2/opportunities/696714",
+        "status": "open",
+        "location": "Rio de Janeiro, Brazil",
+        "programmes": [
+          {
+            "id": 2,
+            "short_name": "GIP"
+          }
+        ],
+        "office": {
+          "id": 777,
+          "name": "RIO DE JANEIRO",
+          "full_name": "AIESEC in RIO DE JANEIRO",
+          "email": "riodejaneiro@aiesec.org.br",
+          "url": "https://gis.aiesec.org/v2/committees/777"
+        },
+        "earliest_start_date": "2015-12-07T00:00:00Z",
+        "latest_end_date": "2016-03-07T00:00:00Z",
+        "applications_close_date": "2015-12-12T00:00:00Z",
+        "profile_photo_url": "https://gis-production.s3.amazonaws.com/profile_photos/medium/1445187206.png"
+      },
+      "permissions": {
+        "can_update": true,
+        "can_be_rejected": false,
+        "can_be_matched": false,
+        "can_sign_an": false,
+        "can_be_approved_tn": false,
+        "can_be_approved_ep": false,
+        "can_be_realized": false,
+        "can_be_completed": false,
+        "should_pay_at_match": false,
+        "has_paid_for_match": true,
+        "can_mark_match_paid": false,
+        "should_pay_at_realize": false,
+        "has_paid_for_realize": false,
+        "can_mark_realize_paid": false,
+        "can_be_withdrawn": false,
+        "can_be_reopened": false,
+        "can_be_approval_broken": false,
+        "should_complete_nps": true,
+        "should_complete_ldm": false,
+        "has_completed_nps": false,
+        "has_completed_ldm": false
+      },
+      "created_at": "2015-10-31T11:13:34Z",
+      "updated_at": "2015-12-16T06:10:11Z"
+    },
+    {
+      "id": 949129,
+      "url": "https://gis.aiesec.org/v2/applications/949129",
+      "status": "realized",
+      "current_status": "realized",
+      "an_signed_at": "2015-10-24T18:55:07.781Z",
+      "favourite": null,
+      "person": {
+        "id": 691009,
+        "email": "andrea54576@yahoo.es",
+        "url": "https://gis.aiesec.org/v2/people/691009",
+        "first_name": "Erika",
+        "dob": "1992-12-10",
+        "full_name": "Erika Andrea Carranza",
+        "last_name": "Carranza",
+        "home_lc": {
+          "id": 1395,
+          "name": "ANDES",
+          "country": "Colombia"
+        },
+        "interviewed": true,
+        "is_employee": null,
+        "permissions": {
+          "can_update": true,
+          "can_edit_managers": true,
+          "can_interview": true,
+          "can_view_applications": true,
+          "should_pay_at_apply": false,
+          "has_paid_for_apply": true,
+          "can_mark_apply_paid": true,
+          "can_mark_gep": false,
+          "can_apply": true
+        },
+        "profile_photo_url": "https://gis-production.s3.amazonaws.com/profile_photos/medium/1453038088.jpg"
+      },
+      "opportunity": {
+        "id": 691411,
+        "title": "VENTURE BRASIL M&P",
+        "url": "https://gis.aiesec.org/v2/opportunities/691411",
+        "status": "open",
+        "location": "Salvador, Brazil",
+        "programmes": [
+          {
+            "id": 2,
+            "short_name": "GIP"
+          }
+        ],
+        "office": {
+          "id": 1121,
+          "name": "SALVADOR",
+          "full_name": "AIESEC in SALVADOR",
+          "email": "salvador@aiesec.org.br",
+          "url": "https://gis.aiesec.org/v2/committees/1121"
+        },
+        "earliest_start_date": "2015-12-07T00:00:00Z",
+        "latest_end_date": "2016-03-14T00:00:00Z",
+        "applications_close_date": "2015-12-31T00:00:00Z",
+        "profile_photo_url": "https://gis-production.s3.amazonaws.com/profile_photos/medium/1443141580.png"
+      },
+      "permissions": {
+        "can_update": true,
+        "can_be_rejected": false,
+        "can_be_matched": false,
+        "can_sign_an": false,
+        "can_be_approved_tn": false,
+        "can_be_approved_ep": false,
+        "can_be_realized": false,
+        "can_be_completed": false,
+        "should_pay_at_match": false,
+        "has_paid_for_match": true,
+        "can_mark_match_paid": false,
+        "should_pay_at_realize": false,
+        "has_paid_for_realize": false,
+        "can_mark_realize_paid": false,
+        "can_be_withdrawn": false,
+        "can_be_reopened": false,
+        "can_be_approval_broken": false,
+        "should_complete_nps": false,
+        "should_complete_ldm": false,
+        "has_completed_nps": false,
+        "has_completed_ldm": false
+      },
+      "created_at": "2015-10-10T21:33:25Z",
+      "updated_at": "2015-12-12T06:13:00Z"
+    }
+  ],
+  "facets": [
+    {
+      "name": "all_statuses",
+      "type": "terms",
+      "total": 1281670,
+      "terms": [
+        {
+          "term": "open",
+          "count": 517493
+        },
+        {
+          "term": "withdrawn",
+          "count": 365635
+        },
+        {
+          "term": "rejected",
+          "count": 186346
+        },
+        {
+          "term": "completed",
+          "count": 109630
+        },
+        {
+          "term": "realized",
+          "count": 74682
+        },
+        {
+          "term": "approved",
+          "count": 18766
+        },
+        {
+          "term": "matched",
+          "count": 6379
+        },
+        {
+          "term": "accepted",
+          "count": 1872
+        },
+        {
+          "term": "approved_ep_manager",
+          "count": 499
+        },
+        {
+          "term": "approved_tn_manager",
+          "count": 288
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "type": "terms",
+      "total": 2,
+      "terms": [
+        {
+          "term": "realized",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}

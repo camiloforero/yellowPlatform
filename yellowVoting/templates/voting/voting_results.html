@@ -1,0 +1,31 @@
+{% extends 'yellowPlatform/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Resultados de las votaciones{% endblock %}
+{% block page-header %}Resultados de las votaciones{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<table class="table table-responsive">
+<thead>
+<tr>
+    <th>Moción</th>
+    <th>Votos en abstención</th>
+    <th>Votos en blanco</th>
+    <th>Votos en contra</th>
+    <th>Votos a favor</th>
+</tr>
+</thead>
+<tbody>
+{% for mocion, resultados in votaciones.items %}
+<tr>
+    <td>{{mocion}}</td>
+    <td>{{resultados.A}}</td>
+    <td>{{resultados.B}}</td>
+    <td>{{resultados.C}}</td>
+    <td>{{resultados.F}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
+{% block scripts %}{% endblock %}

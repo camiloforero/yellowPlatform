@@ -32,18 +32,25 @@ class GetLCScoreboard(TemplateView):
     def get_context_data(self, **kwargs):
         api = ExpaApi()
         context = super(GetLCScoreboard, self).get_context_data(**kwargs)
+        try:
+            officeID = self.kwargs['officeID']
+        except KeyError:
+            officeID = 1395
         programs = ['ogcdp', 'igcdp', 'ogip', 'igip']
         achieved = {}
         total = 0
         for program in programs:
-            achieved[program] = api.getCurrentYearStats(program)
-            total += achieved[program]['RE']
+            try:
+                achieved[program] = api.getCurrentYearStats(program, officeID=officeID)
+                total += achieved[program]['RE']
+            except ValueError:
+                achieved[program] = {'RE':"Expa Error", 'MA':'Expa Error'}
         achieved['total'] = {'RE':total}
         context['achieved'] = achieved 
         rankings = {
             'rankings': {
-                'MA':tools.getLCRankings('total', 'MA'),
-                'RE':tools.getLCRankings('total', 'RE')
+                'MA':tools.getLCRankings('total', 'MA', lcID=officeID),
+                'RE':tools.getLCRankings('total', 'RE', lcID=officeID)
                 }
             }
         context.update(rankings)
@@ -55,11 +62,11 @@ class GetAreaScoreboard(TemplateView):
         api = ExpaApi()
         programa = self.kwargs['programa']
         context = super(GetAreaScoreboard, self).get_context_data(**kwargs)
-        context['performance'] = api.getProgramWeeklyPerformance(programa)
         context['program'] = programa 
+        context['performance'] = api.getProgramWeeklyPerformance(programa)
+        columns = zip(context['performance']['weekly']['MA'], context['performance']['weekly']['RE'])
         #Creates the JSON data to be used by Google Charts
         chartList = [['Semana', 'Matches', 'Realizaciones']]
-        columns = zip(context['performance']['weekly']['MA'], context['performance']['weekly']['RE'])
         for index, week in enumerate(columns):
             chartList.append(['Semana %i' % index, columns[index][0], columns[index][1]])
         context['weeklyJSON'] = json.dumps(chartList)
@@ -112,9 +119,6 @@ class GetAreaScoreboard(TemplateView):
             }
         else:
             print programa[0]
-
-
-
         return context
 
 class GetLCWeeklyGoals(TemplateView):
@@ -128,6 +132,21 @@ class GetLCWeeklyGoals(TemplateView):
 
 class GetIndex(TemplateView):
     template_name = "analytics/index.html"
+
+class GetRankingIndex(TemplateView):
+    template_name = "analytics/ranking_index.html"
+    def get_context_data(self, **kwargs):
+        try:
+            officeID = int(self.kwargs['officeID'])
+        except KeyError:
+            officeID = 1395
+        api = ExpaApi()
+        context = super(GetRankingIndex, self).get_context_data(**kwargs)
+        programs = ['total', 'igcdp', 'ogcdp', 'igip', 'ogip']
+        rankings = { program:{'MA':tools.getLCRankings(program,'MA', officeID), 'RE':tools.getLCRankings(program, 'RE', officeID)} for program in programs}
+        context['all_rankings'] = rankings
+        return context
+
 
 class GetRanking(ListView):
     model = LC

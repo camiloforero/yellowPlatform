@@ -13,7 +13,7 @@ class PlenoDerecho(models.Model):
 @python_2_unicode_compatible
 class Mocion(models.Model):
     nombre = models.CharField(max_length=64)
-    texto = models.TextField()
+    texto = models.TextField(null=True, blank=True)
     asamblea = models.CharField(max_length=8)
     def __str__(self):
         return self.nombre + ' ' + self.asamblea
@@ -27,9 +27,11 @@ class Voto(models.Model):
         ('F', 'A favor'),
         )
     votante = models.ForeignKey(PlenoDerecho, models.CASCADE)
-    mocion = models.ForeignKey(Mocion, models.CASCADE)
-    votacion = models.CharField(max_length=1, choices=VOTING_CHOICES)
+    mocion = models.ForeignKey(Mocion, models.CASCADE, related_name="votos")
+    votacion = models.CharField(max_length=1, choices=VOTING_CHOICES, blank=False)
     def __str__(self):
-        return str(self.mocion) + ' ' + str(self.votacion) 
+        return "%s %s" % (self.mocion, self.votacion)
+    class Meta:
+        unique_together = ("votante", "mocion")
 
 # Create your models here.

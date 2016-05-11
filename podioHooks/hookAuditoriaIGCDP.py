@@ -2,7 +2,7 @@
 from django_podio import api
 import pdb
 
-def run(appID, params):
+def run(appID, params, hook=None):
     podioApi = api.PodioApi(appID, client=True)
     item = podioApi.get_item(params['item_id'], external_id=False)
     if item['values'][50175872]['value'] == 'Social' and item['values'][117107512]['value'] == 'Si':
@@ -20,8 +20,8 @@ def run(appID, params):
             (50174533, 113794819), #Memodeal
         ]
         extra_data = {
-            113794813:1, #TODO
-            113796330:1 #TODO qué es esto?
+            113794813:1, #TODO es un campo de categoría, probablemente LC
+            113796330:1 #TODO qué es esto? Es un campo de categoría, pero no sabría cual
         }
             
         ans = podioApi.copy_item(params['item_id'], 14817777, transformer, extra_data)

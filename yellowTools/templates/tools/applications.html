@@ -1,0 +1,33 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+{% block title %}{{header}}{% endblock %}
+{% block page-header %}{{header}}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+
+<table class="table table-responsive table-striped table-hover table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th>EP</th>
+            <th>Fecha de nacimiento</th>
+            <th>Expa profile</th>
+            <th>Nombre oportunidad</th>
+            <th>Link oportunidad</th>
+            <th>Lugar</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for application in applications %}
+        <tr>
+            <td>{{application.person.full_name}}</td>
+            <td>{{application.person.dob}}</td>
+            <td><a href="https://experience.aiesec.org/#/people/{{application.person.id}}">{{application.person.id}}</a></td>
+            <td>{{application.opportunity.title}}</td>
+            <td><a href="https://experience.aiesec.org/#/opportunities/{{application.opportunity.id}}">{{application.opportunity.id}}</a></td>
+            <td>{{application.opportunity.location}}</td>
+        </tr>
+    {% endfor %}                
+    </tbody>
+</table>
+{% endblock %}
+{% block scripts %}{% endblock %}

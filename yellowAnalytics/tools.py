@@ -1,6 +1,6 @@
 from .models import LC
 
-def getLCRankings(programa, metric='RE', lcID = 1395):
+def getLCRankings(programa, metric='RE', lcID=1395):
     lc = LC.objects.get(expaID = lcID)
     mcID = lc.mc_id
     regionID = lc.mc.region_id

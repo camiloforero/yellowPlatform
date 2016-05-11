@@ -61,12 +61,11 @@ def loadEverything():
         loadMCs(region.expaID)
         loadRegionLCs(region.expaID)
 
-def loadMCPerformance(mcID):
+def loadMCPerformance(mcID, api):
     mc = MC.objects.get(expaID = mcID)
     print "Cargando datos de %s" % mc.nombre
     programs = ['ogcdp', 'igcdp', 'ogip', 'igip']
     metrics = ['MA', 'RE']
-    api = expaApi.ExpaApi()
     allProgramsPerformance = {}
     for program in programs:
         print "cargando %s" % program
@@ -84,20 +83,21 @@ def loadMCPerformance(mcID):
         lc.save() 
         
 
-def loadRegionPerformance(region=1627):
+def loadRegionPerformance(region, api):
     """
     Loads the performance of all LCs inside a region.
     """
     region = Region.objects.get(expaID=region)
     for mc in region.mcs.all():
-        loadMCPerformance(mc.expaID)
+        loadMCPerformance(mc.expaID, api)
 
 def loadWorldPerformance():
     """
     Loads the performance of all LCs of the world.
     """
+    api = expaApi.ExpaApi()
     for region in Region.objects.all():
-        loadRegionPerformance(region.expaID)
+        loadRegionPerformance(region.expaID, api)
 
 def loadMonthlyGoals(officeID):
     from django_gdocs import gdocsApi

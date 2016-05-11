@@ -13,3 +13,9 @@
 [submodule "django_gdocs"]
 	path = django_gdocs
 	url = https://github.com/camiloforero/django_gdocs.git
+[submodule "complex_hooks"]
+	path = complex_hooks
+	url = https://github.com/camiloforero/complex_hooks.git
+[submodule "podioExpaLoaders"]
+	path = podioExpaLoaders
+	url = https://github.com/camiloforero/podioExpaLoaders.git

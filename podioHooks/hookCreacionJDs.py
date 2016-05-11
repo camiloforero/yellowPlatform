@@ -7,7 +7,7 @@ from django.utils.html import strip_tags
 
 import pdb
 
-def run(appID, params):
+def run(appID, params, hook=None):
     transformer = {
         'english-writing': 'writing', 
         'english-reading': 'reading',

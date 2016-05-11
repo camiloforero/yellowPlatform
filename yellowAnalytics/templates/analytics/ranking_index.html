@@ -1,0 +1,75 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+
+{% block title %}Rankings AIESEC Andes{% endblock %}
+{% block page-header %}Rankings AIESEC Andes{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+{% for program, rankings in all_rankings.items %}
+<h1>{{program}}</h1>
+<h2>Realizaciones</h2>
+<div class="col-sm-4 col-xs-12">
+    <div class="well text-center">
+        <h4>Top global</h4>    
+        <a href="{% url 'analytics:ranking' programa=program ranking='global' metric='RE'%}">
+        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+            <span>{{rankings.RE.global}}</span>
+        </button>
+        </a>
+    </div> 
+</div>
+<div class="col-sm-4 col-xs-12">
+    <div class="well text-center">
+        <h4>Top regional</h4>    
+        <a href="{% url 'analytics:ranking' programa=program ranking='regional' metric='RE'%}">
+        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+            <span>{{rankings.RE.regional}}</span>
+        </button>
+        </a>
+    </div> 
+</div>
+<div class="col-sm-4 col-xs-12">
+    <div class="well text-center">
+        <h4>Top nacional</h4>    
+        <a href="{% url 'analytics:ranking' programa=program ranking='national' metric='RE'%}">
+        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+            <span>{{rankings.RE.national}}</span>
+        </button>
+        </a>
+    </div> 
+</div>
+<h2>Matches</h2>
+<div class="col-sm-4 col-xs-12">
+    <div class="well text-center">
+        <h4>Top global</h4>    
+        <a href="{% url 'analytics:ranking' programa=program ranking='global' metric='MA'%}">
+        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+            <span>{{rankings.MA.global}}</span>
+        </button>
+        </a>
+    </div> 
+</div>
+<div class="col-sm-4 col-xs-12">
+    <div class="well text-center">
+        <h4>Top regional</h4>    
+        <a href="{% url 'analytics:ranking' programa=program ranking='regional' metric='MA'%}">
+        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+            <span>{{rankings.MA.regional}}</span>
+        </button>
+        </a>
+    </div> 
+</div>
+<div class="col-sm-4 col-xs-12">
+    <div class="well text-center">
+        <h4>Top nacional</h4>    
+        <a href="{% url 'analytics:ranking' programa=program ranking='national' metric='MA'%}">
+        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+            <span>{{rankings.MA.national}}</span>
+        </button>
+        </a>
+    </div> 
+</div>
+{% endfor %}
+{% endblock %}
+{% block scripts %}
+{% endblock %}

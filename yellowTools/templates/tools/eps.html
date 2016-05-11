@@ -1,26 +1,36 @@
-{% extends 'yellowPlatform/base.html' %}
+{% extends 'yellowPlatform/base_wide.html' %}
 {% load staticfiles %}
-{% block title %}{% endblock %}
-{% block page-header %}{% endblock %}
+{% block title %}{{header}}{% endblock %}
+{% block page-header %}{{header}}{% endblock %}
 {% block body-class %}{% endblock %}
 {% block body %}
 
 <table class="table table-responsive table-striped table-hover table-condensed table-bordered">
     <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Expa ID</th>
-            <th>Teléfono</th>
-            <th>Correo</th>
+            <th>Name</th>
+            <th>Programmes (beta)</th>
+            <th>Expa profile</th>
+            <th>Phone number</th>
+            <th>Email</th>
+            <th>CV</th>
+            <th>Expa status</th>
         </tr>
     </thead>
     <tbody>
     {% for persona in personas %}
         <tr>
             <td>{{persona.full_name}}</td>
-            <td>{{persona.id}}</td>
+            <td>
+            {% for programme in persona.programmes %}
+                {{programme.short_name}}
+            {% endfor %}
+            </td>
+            <td><a href="https://experience.aiesec.org/#/people/{{persona.id}}">{{persona.id}}</a></td>
             <td>{{persona.phone}}</td>
             <td>{{persona.email}}</td>
+            <td><a href="{{persona.cv_url.url}}">{{persona.cv_url.name}}</a></td>
+            <td>{{persona.status|capfirst}}</td>
         </tr>
     {% endfor %}                
     </tbody>

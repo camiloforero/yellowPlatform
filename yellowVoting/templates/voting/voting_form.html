@@ -1,20 +1,22 @@
 {% extends 'yellowPlatform/base.html' %}
 {% load staticfiles %}
 
-{% block title %}{% endblock %}
-{% block page-header %}{% endblock %}
+{% block title %}Votación {{Q}}{% endblock %}
+{% block page-header %}Votación {{Q}}{% endblock %}
 {% block body-class %}{% endblock %}
 {% block body %}
+<p>Bienvenido, miembro en pleno derecho de AIESEC Andes. Por favor ingresa tu código en el primer campo de este formulario y vota con conciencia.</p>
 <form action="#" method="post">
 {% csrf_token %}
-{% for mocion in mocionList %}
 <input type="text" name="codigo", placeholder="codigo"/>
+{% for mocion in mocionList %}
 <h4>{{mocion.mocion.nombre}}</h4>
 <p>{{mocion.mocion.texto}}</p>
 {{mocion.votoForm.errors}}
 {{mocion.votoForm}}
 {% endfor %}
-    <input type="submit" value="Enviar"/>
+</br>
+    <button type="submit" class="btn btn-default">Enviar</button>
 </form>
 
 {% endblock %}

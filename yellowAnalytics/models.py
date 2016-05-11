@@ -62,6 +62,7 @@ class Office(models.Model):
     expaID = models.PositiveIntegerField(primary_key=True)
     office_type = models.CharField(max_length=8)
     superoffice = models.ForeignKey('Office', models.PROTECT, related_name='suboffices', null=True)
+    scoreboard_enabled = models.BooleanField("Este campo representa si el scoreboard está habilitado para esta entidad o no", default=False)
     def __str__(self):
         return self.name
 
@@ -90,3 +91,14 @@ class MonthlyGoal(models.Model):
         return self.program_id + ' - Mes ' + str(self.month)
     class Meta:
         unique_together = ('month', 'program', 'office')
+
+@python_2_unicode_compatible
+class YearlyGoal(models.Model):
+    MA = models.PositiveSmallIntegerField()
+    RE = models.PositiveSmallIntegerField()
+    program = models.ForeignKey(Program, models.CASCADE, related_name='yearly_goals')
+    office = models.ForeignKey(Office, models.CASCADE, related_name='yearly_goals')
+    def __str__(self):
+        return self.program_id + ' - Meta anual'
+    class Meta:
+        unique_together = ('program', 'office')

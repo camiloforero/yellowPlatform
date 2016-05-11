@@ -2,7 +2,7 @@
 from django_podio import api
 from django_mailTemplates import mailApi
 
-def run(appID, params):
+def run(appID, params, hook=None):
     podioApi = api.PodioApi(appID)
     item = podioApi.getItem(params['item_id'])
     email = mailApi.MailApi('testMail')

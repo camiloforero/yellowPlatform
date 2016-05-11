@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^$', cache_page(1*60*1)(views.GetIndex.as_view()), name='index'),
     url(r'^ebs/(?P<mc>\w+)/$', cache_page(60*60*24*7)(views.GetEBs.as_view()), name='ebs'),
     url(r'^uncontacted/$', cache_page(60*5)(views.GetUncontactedEPs.as_view()), name='uncontactedEPs'),
+    url(r'^search_tool/$', cache_page(60*60*24)(views.GetMatchableEPs.as_view()), name='search_tool'),
+    url(r'^realized/(?P<program>\w+)/(?P<month>\w+)/$', cache_page(0*60*24)(views.GetRealizedEPs.as_view()), name='realized_eps'),
     ]

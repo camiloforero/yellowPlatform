@@ -2,7 +2,7 @@
 from django_podio import api
 import pdb
 
-def run(appID, params):
+def run(appID, params, hook=None):
     testApi = api.PodioApi(appID)
     item = testApi.getItem(params['item_id'])
     pdb.set_trace()
