@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'yellowAnalytics',
     'yellowTools',
     'yellowVoting',
+    'podioExpaLoaders',
 #    'debug_toolbar',
 
 ]

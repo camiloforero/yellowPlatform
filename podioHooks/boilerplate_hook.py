@@ -1,4 +1,5 @@
 # encoding:utf-8
+from __future__ import unicode_literals
 from django_podio import api
 import pdb
 
@@ -7,5 +8,5 @@ def run(appID, params, hook=None):
     item = podioApi.getItem(params['item_id'])
     pdb.set_trace()
 
-    return 'success %s' % item['values']['mailprueba'] 
+    return 'success. item_id: %s, app_id: %s' % (params['item_id'], appID)
         
