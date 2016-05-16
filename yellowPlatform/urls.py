@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^tools/', include('yellowTools.urls', namespace='tools')),
     url(r'^voting/', include('yellowVoting.urls', namespace='voting')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^tinymce/', include('tinymce.urls')),
     url(r'^media\/(?P<path>.*)$', media_xsendfile, {
         'document_root': settings.MEDIA_ROOT,
          }),

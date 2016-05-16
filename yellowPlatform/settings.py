@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django_podio',
     'django_expa',
     'colorful',
+    'tinymce',
+    'django_wysiwyg',
     'widget_tweaks',
     'django_mailTemplates',
     'django_documents',
@@ -203,3 +205,10 @@ MAILGUN_SERVER_NAME = 'aiesecandes.org'
 
 #Settings for webODT
 WEBODT_TEMPLATE_PATH = MEDIA_ROOT + 'odtTemplates/'
+
+#Settings for django_mailTemplates
+DJANGO_WYSIWYG_FLAVOR = "tinymce_advanced"
+TINYMCE_DEFAULT_CONFIG = {
+    'theme':'advanced',
+    }
+TINYMCE_COMPRESSOR = True

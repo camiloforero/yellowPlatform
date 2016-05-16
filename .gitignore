@@ -1,4 +1,4 @@
 *.pyc
 *.swo
-yellowEnv
+yellowEnv/
 google_private_key.json
