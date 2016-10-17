@@ -1,176 +1,139 @@
-{% extends 'yellowPlatform/base.html' %}
+{% extends 'yellowPlatform/base_wide.html' %}
 {% load staticfiles %}
+{% load customTags %}
 
-{% block title %}Scoreboard AIESEC Andes{% endblock %}
-{% block page-header %}Scoreboard AIESEC Andes{% endblock %}
+{% block title %}Scoreboard AIESEC {{office_name}}{% endblock %}
+{% block page-header %}Scoreboard AIESEC {{office_name}}{% endblock %}
 {% block body-class %}{% endblock %}
 {% block body %}
 <div class="progress">
-    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{achieved.total.RE}}" aria-valuemin="0" aria-valuemax="555" style="width: {% widthratio achieved.total.RE 555 100 %}%">
-        {{achieved.total.RE}}/555
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{achieved.total.realized}}" aria-valuemin="0" aria-valuemax="{{planned.total.realized}}" style="width: {% widthratio achieved.total.realized planned.total.realized 100 %}%">
+        {{achieved.total.realized}}/{{planned.total.realized}}
+    </div>
+</div>
+<a href="{% url 'analytics:area_scoreboard' office_name=office_name programa='IGV' %}">
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+        <div class="count">{{achieved.IGV.realized}}/{{planned.IGV.realized}}</div>
+        <h3>IGV</h3>
+        <p>Matches: {{achieved.IGV.approved}}/{{planned.IGV.approved}}</p>
+    </div>
+</div>
+</a>
+<a href="{% url 'analytics:area_scoreboard' office_name=office_name programa='OGV' %}">
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+        <div class="count">{{achieved.OGV.realized}}/{{planned.OGV.realized}}</div>
+        <h3>OGV</h3>
+        <p>Matches: {{achieved.OGV.approved}}/{{planned.OGV.approved}}</p>
+    </div>
+</div>
+</a>
+<a href="{% url 'analytics:area_scoreboard' office_name=office_name programa='IGET' %}">
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+        <div class="count">{{achieved.IGET.realized}}/{{planned.IGET.realized}}</div>
+        <h3>IGET</h3>
+        <p>Matches: {{achieved.IGET.approved}}/{{planned.IGET.approved}}</p>
+    </div>
+</div>
+</a>
+<a href="{% url 'analytics:area_scoreboard' office_name=office_name programa='OGET' %}">
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+        <div class="count">{{achieved.OGET.realized}}/{{planned.OGET.realized}}</div>
+        <h3>OGET</h3>
+        <p>Matches: {{achieved.OGET.approved}}/{{planned.OGET.approved}}</p>
+    </div>
+</div>
+</a>
+<div class="col-md-3 col-xs-12 widget widget_tally_box">
+            <div class="x_panel fixed_height_390">
+              <div class="x_title">
+                <h2>Rendimiento</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
+                  </li>
+                </ul>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="x_content">
+                <div style="text-align: center; margin-bottom: 17px">
+                  <ul class="verticle_bars list-inline">
+                    <li>
+                      <div class="progress vertical progress_wide bottom">
+                        <div class="progress-bar progress-bar-dark" role="progressbar" data-transitiongoal="{% widthratio achieved.IGV.realized planned.IGV.realized 100 %}" style="height: {% widthratio achieved.IGV.realized planned.IGV.realized 100 %}%;" aria-valuenow="{% widthratio achieved.IGV.realized planned.IGV.realized 100 %}"></div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="progress vertical progress_wide bottom">
+                        <div class="progress-bar progress-bar-gray" role="progressbar" data-transitiongoal="{% widthratio achieved.OGV.realized planned.OGV.realized 100 %}" style="height: {% widthratio achieved.OGV.realized planned.OGV.realized 100 %}%;" aria-valuenow="{% widthratio achieved.OGV.realized planned.OGV.realized 100 %}"></div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="progress vertical progress_wide bottom">
+                        <div class="progress-bar progress-bar-info" role="progressbar" data-transitiongoal="{% widthratio achieved.IGET.realized planned.IGET.realized 100 %}" style="height: {% widthratio achieved.IGET.realized planned.IGET.realized 100 %}%;" aria-valuenow="{% widthratio achieved.IGET.realized planned.IGET.realized 100 %}"></div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="progress vertical progress_wide bottom">
+                        <div class="progress-bar progress-bar-success" role="progressbar" data-transitiongoal="{% widthratio achieved.OGET.realized planned.OGET.realized 100 %}" style="height: {% widthratio achieved.OGET.realized planned.OGET.realized 100 %}%;" aria-valuenow="{% widthratio achieved.OGET.realized planned.OGET.realized 100 %}"></div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="divider"></div>
+
+                <ul class="legend list-unstyled">
+                  <li>
+                    <p>
+                      <span class="icon"><i class="fa fa-square dark"></i></span> <span class="name">IGV</span>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      <span class="icon"><i class="fa fa-square grey"></i></span> <span class="name">OGV</span>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      <span class="icon"><i class="fa fa-square blue"></i></span> <span class="name">IGET</span>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      <span class="icon"><i class="fa fa-square green"></i></span> <span class="name">OGET</span>
+                    </p>
+                  </li>
+                </ul>
+            </div>
     </div>
 </div>
 <div class="col-md-6 col-sm-12">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-xs-3">
-                    <i class="glyphicon glyphicon-home fa-5x"></i>
-                </div>
-                <div class="col-xs-9 text-right">
-                    <div style="font-size:3em">{{achieved.igcdp.RE}}/200</div>
-                    <div>IGCDP</div>
-                </div>
-            </div>
-        </div>
-        <div class="panel-body">
-            Matches: {{achieved.igcdp.MA}}
-        </div>
-        <a href={% url 'analytics:area_scoreboard' 'igcdp' %}>
-            <div class="panel-footer">
-                <span class="pull-left">Ver detalles</span>
-                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                <div class="clearfix"></div>
-            </div>
-        </a>
+<div class="x_panel">
+    {% for metric, values in rankings.items %}
+    <h2>{{metric|title}}</h2>
+    {% for ranking, value in values %}
+    <div class="col-sm-4 col-xs-12">
+        <div class="well text-center">
+            <h4>{{ranking|title}}</h4>    
+            <a href="{% url 'analytics:ranking' office_name=office_name programa='total' ranking=ranking metric=metric%}">
+            <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+                <span>{{value}}</span>
+            </button>
+            </a>
+        </div> 
     </div>
+    {% endfor %}
+    {% endfor %}
 </div>
-<div class="col-md-6 col-sm-12">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-xs-3">
-                    <i class="glyphicon glyphicon-plane fa-5x"></i>
-                </div>
-                <div class="col-xs-9 text-right">
-                    <div style="font-size:3em">{{achieved.ogcdp.RE}}/210</div>
-                    <div>OGCDP</div>
-                </div>
-            </div>
-        </div>
-        <div class="panel-body">
-            Matches: {{achieved.ogcdp.MA}}
-        </div>
-        <a href="{% url 'analytics:area_scoreboard' 'ogcdp' %}">
-            <div class="panel-footer">
-                <span class="pull-left">Ver detalles</span>
-                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                <div class="clearfix"></div>
-            </div>
-        </a>
-    </div>
-</div>
-<div class="col-md-6 col-sm-12">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-xs-3">
-                    <i class="glyphicon glyphicon-globe fa-5x"></i>
-                </div>
-                <div class="col-xs-9 text-right">
-                    <div style="font-size:3em">{{achieved.igip.RE}}/45</div>
-                    <div>IGIP</div>
-                </div>
-            </div>
-        </div>
-        <div class="panel-body">
-            Matches: {{achieved.igip.MA}}
-        </div>
-        <a href="{% url 'analytics:area_scoreboard' 'igip' %}">
-            <div class="panel-footer">
-                <span class="pull-left">Ver detalles</span>
-                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                <div class="clearfix"></div>
-            </div>
-        </a>
-    </div>
-</div>
-<div class="col-md-6 col-sm-12">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-xs-3">
-                    <i class="glyphicon glyphicon-briefcase fa-5x"></i>
-                </div>
-                <div class="col-xs-9 text-right">
-                    <div style="font-size:3em">{{achieved.ogip.RE}}/100</div>
-                    <div>OGIP</div>
-                </div>
-            </div>
-        </div>
-        <div class="panel-body">
-            Matches: {{achieved.ogip.MA}}
-        </div>
-        <a href="{% url 'analytics:area_scoreboard' 'ogip' %}">
-            <div class="panel-footer">
-                <span class="pull-left">Ver detalles</span>
-                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                <div class="clearfix"></div>
-            </div>
-        </a>
-    </div>
-</div>
-<h2>Realizaciones</h2>
-<div class="col-sm-4 col-xs-12">
-    <div class="well text-center">
-        <h4>Top global</h4>    
-        <a href="{% url 'analytics:ranking' programa='total' ranking='global' metric='RE'%}">
-        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
-            <span>{{rankings.RE.global}}</span>
-        </button>
-        </a>
-    </div> 
-</div>
-<div class="col-sm-4 col-xs-12">
-    <div class="well text-center">
-        <h4>Top regional</h4>    
-        <a href="{% url 'analytics:ranking' programa='total' ranking='regional' metric='RE'%}">
-        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
-            <span>{{rankings.RE.regional}}</span>
-        </button>
-        </a>
-    </div> 
-</div>
-<div class="col-sm-4 col-xs-12">
-    <div class="well text-center">
-        <h4>Top nacional</h4>    
-        <a href="{% url 'analytics:ranking' programa='total' ranking='national' metric='RE'%}">
-        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
-            <span>{{rankings.RE.national}}</span>
-        </button>
-        </a>
-    </div> 
-</div>
-<h2>Matches</h2>
-<div class="col-sm-4 col-xs-12">
-    <div class="well text-center">
-        <h4>Top global</h4>    
-        <a href="{% url 'analytics:ranking' programa='total' ranking='global' metric='MA'%}">
-        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
-            <span>{{rankings.MA.global}}</span>
-        </button>
-        </a>
-    </div> 
-</div>
-<div class="col-sm-4 col-xs-12">
-    <div class="well text-center">
-        <h4>Top regional</h4>    
-        <a href="{% url 'analytics:ranking' programa='total' ranking='regional' metric='MA'%}">
-        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
-            <span>{{rankings.MA.regional}}</span>
-        </button>
-        </a>
-    </div> 
-</div>
-<div class="col-sm-4 col-xs-12">
-    <div class="well text-center">
-        <h4>Top nacional</h4>    
-        <a href="{% url 'analytics:ranking' programa='total' ranking='national' metric='MA'%}">
-        <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
-            <span>{{rankings.MA.national}}</span>
-        </button>
-        </a>
-    </div> 
 </div>
 {% endblock %}
 {% block scripts %}

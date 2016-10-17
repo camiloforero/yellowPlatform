@@ -1,0 +1,29 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+{% block title %}{{header}}{% endblock %}
+{% block page-header %}{{header}}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+
+<table class="table table-responsive table-striped table-hover table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>EXPA ID</th>
+            <th>Aplicaciones GIP</th>
+            <th>Aplicaciones GCDP</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for id, persona in personas.items %}
+        <tr>
+            <td>{{persona.full_name}}</td>
+            <td><a href="https://experience.aiesec.org/#/people/{{id}}">{{id}}</a></td>
+            <td>{{persona.gip_apps}}</td>
+            <td>{{persona.gcdp_apps}}</td>
+        </tr>
+    {% endfor %}                
+    </tbody>
+</table>
+{% endblock %}
+{% block scripts %}{% endblock %}

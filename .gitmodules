@@ -19,3 +19,6 @@
 [submodule "podioExpaLoaders"]
 	path = podioExpaLoaders
 	url = https://github.com/camiloforero/podioExpaLoaders.git
+[submodule "yellowCrons"]
+	path = yellowCrons
+	url = https://github.com/camiloforero/yellowCrons.git

@@ -58,10 +58,13 @@ class Program(models.Model):
 
 @python_2_unicode_compatible
 class Office(models.Model):
+    """
+    This class represents an office, any kind of office. Is a more general version of the previous MC, LC and Region division, and is meant to eventually replace them everywhere
+    """
     name = models.CharField(max_length=64, unique=True)
     expaID = models.PositiveIntegerField(primary_key=True)
     office_type = models.CharField(max_length=8)
-    superoffice = models.ForeignKey('Office', models.PROTECT, related_name='suboffices', null=True)
+    superoffice = models.ForeignKey('Office', models.SET_NULL, related_name='suboffices', null=True)
     scoreboard_enabled = models.BooleanField("Este campo representa si el scoreboard está habilitado para esta entidad o no", default=False)
     def __str__(self):
         return self.name
@@ -73,22 +76,35 @@ class LogrosPrograma(models.Model):
     """
     program = models.ForeignKey(Program, models.CASCADE, related_name='logros')
     office = models.ForeignKey(Office, models.CASCADE, related_name='logros')
-    MA = models.PositiveSmallIntegerField()
-    RE = models.PositiveSmallIntegerField()
+    approved = models.PositiveSmallIntegerField()
+    realized = models.PositiveSmallIntegerField()
     def __str__(self):
-        return self.program + ' ' + str(self.office)
+        return unicode(self.program) + ' ' + unicode(self.office)
     class Meta:
         unique_together = ('program', 'office')
 
 @python_2_unicode_compatible
 class MonthlyGoal(models.Model):
     month = models.PositiveSmallIntegerField()
-    MA = models.PositiveSmallIntegerField()
-    RE = models.PositiveSmallIntegerField()
+    year = models.PositiveSmallIntegerField()
+    approved = models.PositiveSmallIntegerField(null=True)
+    realized = models.PositiveSmallIntegerField(null=True)
     program = models.ForeignKey(Program, models.CASCADE, related_name='monthly_goals')
     office = models.ForeignKey(Office, models.CASCADE, related_name='monthly_goals')
     def __str__(self):
-        return self.program_id + ' - Mes ' + str(self.month)
+        return 'Meta: ' + self.program_id + ' - Mes ' + str(self.month) + ' - Año: ' + str(self.year)
+    class Meta:
+        unique_together = ('month', 'year', 'program', 'office')
+
+@python_2_unicode_compatible
+class MonthlyAchievement(models.Model):
+    month = models.PositiveSmallIntegerField()
+    approved = models.PositiveSmallIntegerField(null=True)
+    realized = models.PositiveSmallIntegerField(null=True)
+    program = models.ForeignKey(Program, models.CASCADE, related_name='monthly_achievements')
+    office = models.ForeignKey(Office, models.CASCADE, related_name='monthly_achievements')
+    def __str__(self):
+        return 'Logro: ' + self.program_id + ' - Mes ' + str(self.month)
     class Meta:
         unique_together = ('month', 'program', 'office')
 
@@ -102,3 +118,17 @@ class YearlyGoal(models.Model):
         return self.program_id + ' - Meta anual'
     class Meta:
         unique_together = ('program', 'office')
+
+@python_2_unicode_compatible
+class Member(models.Model):
+    office = models.ForeignKey(Office, models.CASCADE, related_name='members')
+    expaID = models.PositiveIntegerField("Expa ID", primary_key=True)
+    name = models.CharField("Nombre", max_length=128, help_text="El nombre compleeto del miembro")
+    role = models.CharField("Rol", max_length=128, help_text="El rol que esa persona desempeña en la organización")
+    phone = models.CharField("Teléfono", max_length=32, help_text="EL número telefónico", null=True)
+    email = models.CharField("Correo", max_length=64, help_text="El correo electrónico", null=True)
+    alt_email = models.CharField("Correo alternativo", max_length=64, help_text="El correo electrónico", null=True)
+    facebook = models.CharField("Facebook", max_length=64, help_text="El facebook", null=True)
+    
+    def __str__(self):
+        return self.name + ' :' + self.office.name

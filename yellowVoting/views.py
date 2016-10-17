@@ -1,5 +1,6 @@
 #coding=utf-8
 from __future__ import unicode_literals
+import math
 from django.db.models import Count
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -54,14 +55,23 @@ class GetVotingResults(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(GetVotingResults, self).get_context_data(**kwargs)
         mociones = Mocion.objects.filter(asamblea=self.kwargs['Q'])
-        votaciones = {}
+        votaciones = []
         for mocion in mociones:
+            votos = 0
             resultados = {}
             resultados['A'] = mocion.votos.filter(votacion="A").count()
             resultados['B'] = mocion.votos.filter(votacion="B").count()
+            votos += resultados['B']
             resultados['C'] = mocion.votos.filter(votacion="C").count()
+            votos += resultados['C']
             resultados['F'] = mocion.votos.filter(votacion="F").count()
-            votaciones[mocion.nombre] = resultados
+            votos += resultados['F']
+            resultados['Q'] = int(math.ceil(votos*2.0/3))
+            if resultados['F'] >= resultados['Q']:
+                resultados['Resultado'] = "Pasa"
+            else:
+                resultados['Resultado'] = "No pasa"
+            votaciones.append((mocion.nombre, resultados))
         context['votaciones'] = votaciones
         return context
 

@@ -13,16 +13,20 @@
     <th>Votos en blanco</th>
     <th>Votos en contra</th>
     <th>Votos a favor</th>
+    <th>Quorum deliberatorio</th>
+    <th>Resultado</th>
 </tr>
 </thead>
 <tbody>
-{% for mocion, resultados in votaciones.items %}
+{% for mocion, resultados in votaciones %}
 <tr>
     <td>{{mocion}}</td>
     <td>{{resultados.A}}</td>
     <td>{{resultados.B}}</td>
     <td>{{resultados.C}}</td>
     <td>{{resultados.F}}</td>
+    <td>{{resultados.Q}}</td>
+    <td>{{resultados.Resultado}}</td>
 </tr>
 {% endfor %}
 </tbody>

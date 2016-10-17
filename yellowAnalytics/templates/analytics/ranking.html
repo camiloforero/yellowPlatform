@@ -13,21 +13,17 @@
             <th>LC</th>
             <th>MC</th>
             <th>Desempeño (realizaciones)</th>
-            <th>Desempeño (matches)</th>
+            <th>Desempeño (approved)</th>
         </tr>
     </thead>
     <tbody>
         {% for lc in lcs %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td>{{lc.nombre}}</td>
-            <td>{{lc.mc.nombre}}</td>
-            {% with programa|add:'RE' as realize %}
-            <td>{{lc|getattribute:realize}}</td>
-            {% endwith %}
-            {% with programa|add:'MA' as match %}
-            <td>{{lc|getattribute:match}}</td>
-            {% endwith %}
+            <td>{{lc.office__name}}</td>
+            <td>{{lc.office__superoffice__name}}</td>
+            <td>{{lc.realized}}</td>
+            <td>{{lc.approved}}</td>
         </tr>
         {% endfor %}
     </tbody>

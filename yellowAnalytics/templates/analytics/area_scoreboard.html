@@ -1,42 +1,119 @@
-{% extends 'yellowPlatform/base.html' %}
+{% extends 'yellowPlatform/base_wide.html' %}
 {% load staticfiles %}
 
-{% block title %}Scoreboard {{program|upper}}{% endblock %}
-{% block page-header %}Scoreboard {{program|upper}}{% endblock %}
+{% block title %}Scoreboard {{program|upper}}: AIESEC {{office_name}}{% endblock %}
+{% block page-header %}Scoreboard {{program|upper}}: AIESEC {{office_name}}{% endblock %}
 {% block body-class %}{% endblock %}
 {% block body %}
-<p>Total matches: {{performance.totals.MATOTAL}}. Total realizaciones: {{performance.totals.RETOTAL}}</p>
-<h2>Ranking</h2>
-<p>Top matches: <a href="{% url 'analytics:ranking' programa=program ranking='global' metric='MA'%}">{{rankings.MA.global}} (Mundial).</a> <a href="{% url 'analytics:ranking' programa=program ranking='regional' metric='MA'%}">{{rankings.MA.regional}} (LATAM).</a> <a href="{% url 'analytics:ranking' programa=program ranking='national' metric='MA'%}">{{rankings.MA.national}} (Colombia).</a></p>
-<p>Top realizaciones: <a href="{% url 'analytics:ranking' programa=program ranking='global' metric='RE'%}">{{rankings.RE.global}} (Mundial).</a> <a href="{% url 'analytics:ranking' programa=program ranking='regional' metric='RE'%}">{{rankings.RE.regional}} (LATAM).</a> <a href="{% url 'analytics:ranking' programa=program ranking='national' metric='RE'%}">{{rankings.RE.national}} (Colombia).</a></p>
-<h2>Desempeño semanal:</h2>
-<table class="table table-responsive table-condensed table-hover">
-    <thead>
-        <tr>
-            <th>KPI</th>
-            {% for weekNumber in performance.weekly.RE %}
-            <th>Semana {{forloop.counter0}}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-    {% for program, weeks in performance.weekly.items %}
-    <tr>
-        <td>{{program}}</td>
-        {% for week in weeks %}
-        <td>{{week}}</td>
-        {% endfor %}
-    </tr>
+<div class="col-md-6 col-sm-12">
+<div class="x_panel">
+    {% for metric, values in rankings.items %}
+    <h2>{{metric|title}}</h2>
+    {% for ranking, value in values %}
+    <div class="col-sm-4 col-xs-12">
+        <div class="well text-center">
+            <h4>{{ranking|title}}</h4>
+            <a href="{% url 'analytics:ranking' office_name=office_name programa=program ranking=ranking metric=metric%}">
+            <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+                <span>{{value}}</span>
+            </button>
+            </a>
+        </div>
+    </div>
     {% endfor %}
-    </tbody>
-</table>
-<div id="chart_div"></div>
+    {% endfor %}
+</div>
+</div>
+<div class="col-md-3 col-xs-12 widget widget_tally_box">
+<div class="x_panel">
+          <div class="x_title">
+            <h2>Rendimiento</h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
+            <div style="text-align: center; margin-bottom: 17px">
+                <h3 class="name">Realizaciones</h3>
+              <span class="chart" data-percent="{% widthratio achieved.realized planned.realized 100 %}">
+                                  <span class="percent">{% widthratio achieved.realized planned.realized 100 %}</span>
+              <canvas height="110" width="110"></canvas></span>
+            </div>
+            <div class="pie_bg" style="text-align: center; display: none; margin-bottom: 17px">
+              <canvas id="canvas_doughnut" height="130"></canvas>
+            </div>
+            <div class="flex">
+              <ul class="list-inline count2">
+                <li>
+                  <h3>{{planned.realized}}</h3>
+                  <span>Planeados</span>
+                </li>
+                <li>
+                  <h3>{{achieved.realized}}</h3>
+                  <span>Ejecutados</span>
+                </li>
+              </ul>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 17px">
+                <h3 class="name">Approved</h3>
+              <span class="chart" data-percent="{% widthratio achieved.approved planned.approved 100 %}">
+                                  <span class="percent">{% widthratio achieved.approved planned.approved 100 %}</span>
+              <canvas height="110" width="110"></canvas></span>
+            </div>
+            <div class="pie_bg" style="text-align: center; display: none; margin-bottom: 17px">
+              <canvas id="canvas_doughnut" height="130"></canvas>
+            </div>
+
+            <div class="flex">
+              <ul class="list-inline count2">
+                <li>
+                  <h3>{{planned.approved}}</h3>
+                  <span>Planeados</span>
+                </li>
+                <li>
+                  <h3>{{achieved.approved}}</h3>
+                  <span>Ejecutados</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-xs-12">
+      <div class="dashboard_graph">
+        <div class="row x_title">
+            <h3>Rendimiento <small>Realizaciones</small></h3>
+        </div>
+
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+          <div style="width: 100%;">
+            <div id="canvas_dahs" class="demo-placeholder" style="width: 100%; height: 270px; padding: 0px; position: relative;"></div>
+          </div>
+        </div>
+        
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+
+<div class="col-md-6 col-sm-12">
+<div class="x_panel">
 {% if uncontacted %}
-<h4>EPs sin contactar: {{uncontacted}}. <a href="https://experience.aiesec.org/#/people?registered%5Bfrom%5D=2016-01-01&contacted=false">Ver EPs</a></h4>
+<h4>EPs sin contactar: {{uncontacted}}. <a href="https://experience.aiesec.org/#/people?registered%5Bfrom%5D=2016-01-01&contacted=false&home_committee={{officeID}}">Ver en EXPA</a></h4>
+<h4><a href="http://platform.aiesecandes.org/app/tools/{{office_name}}/application_count/">Ver número de aplicaciones a oportunidades por EP durante la semana pasada</a></h4>
 {% endif %}
-<div row>
 {% if weekRegisteredAnalytics %}
     <div class="col-md-6 col-sm-12">
+    <h3>Conversión registrados-contactados durante la semana</h3>
     <table class="table table-responsive table-striped table-hover">
         <tr>
            <td>Registrados</td>
@@ -59,6 +136,7 @@
 {% endif %}
 {% if weekContactedAnalytics %}
     <div class="col-md-6 col-sm-12">
+    <h3>Conversión contactados-entrevistados durante la semana</h3>
     <table class="table table-responsive table-striped table-hover">
         <tr>
            <td>Contactados</td>
@@ -79,39 +157,107 @@
     </table>
     </div>
 {% endif %}
-    <table class="table table-responsive">
-        <tr>
-            <th>Mes</th>
-            <th>Planeado (ma)</th>
-            <th>Ejecutado (ma)</th>
-            <th>Planeado (re)</th>
-            <th>Ejecutado (re)</th>
-        </tr>
-        {% for achievement in monthly_achievements.monthly %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        {% endfor %}
-    </table>
+</div>
+</div>
+
+
 </div>
 
 {% endblock %}
 {% block scripts %}
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable( {{weeklyJSON|safe}} );
-        var options = {
-            title: 'Desempeño organizacional',
-            hAxis: {title: 'semanas', titleTextStyle: {color: '#333'}},
-            vaAxis: {minValue: 0}
-        };
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options)
-    }
+<script src="{% static "gentelella/vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"%}"></script>
+<!-- Flot -->
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.pie.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.time.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.stack.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.resize.js" %}"></script>
+<!-- Flot plugins -->
+<script src="{% static "gentelella/production/js/flot/jquery.flot.orderBars.js" %}"></script>
+<script src="{% static "gentelella/production/js/flot/jquery.flot.spline.js" %}"></script>
+<script src="{% static "gentelella/production/js/flot/curvedLines.js" %}"></script>
+<script>
+      $(function() {
+        $('.chart').easyPieChart({
+          easing: 'easeOutElastic',
+          delay: 3000,
+          barColor: '#26B99A',
+          trackColor: '#fff',
+          scaleColor: false,
+          lineWidth: 20,
+          trackWidth: 16,
+          lineCap: 'butt',
+          onStep: function(from, to, percent) {
+            $(this.el).find('.percent').text(Math.round(percent));
+          }
+        });
+      });
 </script>
+<!-- Flot. Para los gráficos de desempeño en matches y realizes -->
+    <script>
+      $(document).ready(function() {
+        var data1 = [
+        {% for goal in achieved_monthly %}
+          [gd(2016, {{goal.month}}), {{goal.realized}}],
+        {% endfor %}
+        ];
+
+        var data2 = [
+        {% for goal in planned_monthly %}
+          [gd({{goal.year}}, {{goal.month}}), {{goal.realized}}],
+        {% endfor %}
+        ];
+        $("#canvas_dahs").length && $.plot($("#canvas_dahs"), [
+          data1, data2
+        ], {
+          series: {
+            lines: {
+              show: false,
+              fill: true
+            },
+            splines: {
+              show: true,
+              tension: 0.4,
+              lineWidth: 1,
+              fill: 0.4
+            },
+            points: {
+              radius: 0,
+              show: true
+            },
+            shadowSize: 2
+          },
+          grid: {
+            verticalLines: true,
+            hoverable: true,
+            clickable: true,
+            tickColor: "#d5d5d5",
+            borderWidth: 1,
+            color: '#fff'
+          },
+          colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
+          xaxis: {
+            tickColor: "rgba(51, 51, 51, 0.06)",
+            mode: "time",
+            tickSize: [1, "month"],
+            //tickLength: 10,
+            axisLabel: "Date",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 12,
+            axisLabelFontFamily: 'Verdana, Arial',
+            axisLabelPadding: 10
+          },
+          yaxis: {
+            ticks: 8,
+            tickColor: "rgba(51, 51, 51, 0.06)",
+          },
+          tooltip: false
+        });
+
+        function gd(year, month) {
+          return new Date(year, month - 1, 1).getTime();
+        }
+      });
+    </script>
+<!-- /Flot -->
 {% endblock %}

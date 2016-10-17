@@ -9,7 +9,8 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Programmes (beta)</th>
+            <th>EP managers</th>
+            <th>Programme</th>
             <th>Expa profile</th>
             <th>Phone number</th>
             <th>Email</th>
@@ -22,10 +23,11 @@
         <tr>
             <td>{{persona.full_name}}</td>
             <td>
-            {% for programme in persona.programmes %}
-                {{programme.short_name}}
+            {% for manager in persona.managers %}
+                <a href="https://experience.aiesec.org/#/people/{{manager.id}}">{{manager.full_name}}</a></a>
             {% endfor %}
             </td>
+            <td>{{persona.calculated_program}}</td>
             <td><a href="https://experience.aiesec.org/#/people/{{persona.id}}">{{persona.id}}</a></td>
             <td>{{persona.phone}}</td>
             <td>{{persona.email}}</td>

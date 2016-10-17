@@ -26,7 +26,7 @@ SECRET_KEY = '$lrsbzlhxlqe(2_s(k3hbzo=87^up99uq3tcmgn%aw8xj5v_gt'
 DEBUG = True
 
 #FOr the debug toolbar use
-#INTERNAL_IPS = ('190.216.136.42')
+INTERNAL_IPS = ('201.216.19.248')
 
 ALLOWED_HOSTS = []
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_admin_generator',
+    'djangobower',
     'webodt',
     'django_podio',
     'django_expa',
@@ -55,13 +56,13 @@ INSTALLED_APPS = [
     'yellowAnalytics',
     'yellowTools',
     'yellowVoting',
-    'podioExpaLoaders',
-#    'debug_toolbar',
+    'yellowCrons',
+    'debug_toolbar',
 
 ]
 
 MIDDLEWARE_CLASSES = [
-#    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -192,6 +193,17 @@ LOGGING = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/html/static/'
+
+STATICFILES_FINDERS = (#Para django-bower
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+    )
+BOWER_COMPONENTS_ROOT = '/var/www/yellowPlatform/components/'
+
+BOWER_INSTALLED_APPS = (
+    'gentelella',
+    )
 
 MEDIA_URL = '/app/media/'
 MEDIA_ROOT = '/var/www/html/media/'

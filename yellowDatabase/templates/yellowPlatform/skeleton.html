@@ -8,16 +8,11 @@
         <meta name="author" content="Camilo Forero">
         <title>{% block title %}untitled{% endblock %} - Yellow Platform</title>
         <link rel="icon" href="/static/favicon.png" type="image/png" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="{% static "gentelella/vendors/bootstrap/dist/css/bootstrap.min.css" %}"/>
+        <link rel="stylesheet" href="{% static "gentelella/vendors/font-awesome/css/font-awesome.min.css" %}"/>
+        <link rel="stylesheet" href="{% static "gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" %}"></link>
+        <link rel="stylesheet" href="{% static "gentelella/build/css/custom.min.css" %}"/>
         <link rel="stylesheet" href="{% static "css/style.css"%}"/>
-        {% if request.user.username == 'JU' %}
-        <style>
-        body {
-            font-family: "Comic Sans Ms", "nexa", Verdana, sans-serif !important;
-        }
-        </style>
-        {% endif %}
     </head>
 
     <body class="{% block body-class %} emptyBody {% endblock %}">
@@ -25,6 +20,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{% static "gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js" %}"></script>
+    <script src="{% static "gentelella/build/js/custom.min.js" %}"></script>
     {% block scripts%}
     {% endblock %}
     </body>

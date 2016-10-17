@@ -5,4 +5,6 @@ class Command(BaseCommand):
     help = 'Reloads the world ranking'
 
     def handle(self, *args, **options):
-        loadingScripts.loadWorldPerformance()
+        #loadingScripts.loadWorldPerformance()
+        loadingScripts.refresh_rankings_v2()
+
