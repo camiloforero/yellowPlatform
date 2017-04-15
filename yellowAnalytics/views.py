@@ -1,5 +1,8 @@
 # coding=utf-8
 from __future__ import unicode_literals
+
+from datetime import datetime
+
 from django.db.models import Sum
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render
@@ -43,6 +46,10 @@ class GetLCScoreboard(TemplateView):
         office = Office.objects.select_related('superoffice', 'superoffice__superoffice').get(name=office_name.replace('_', ' '))
         officeID = office.expaID
         context['officeID'] = officeID
+        products = []
+        for product in Program.objects.all():
+            products.append(product.name)
+        context['products'] = products
         #Prepara la información respecto a los logros del LC a partir de la información dentro de la base de datos
         achieved = {}
         total = 0
@@ -58,7 +65,10 @@ class GetLCScoreboard(TemplateView):
         for meta in MonthlyGoal.objects.filter(office_id=officeID).values('program').annotate(realized=Sum('realized'), approved=Sum('approved')):
             program = meta['program']
             planned[program] = meta
-            total_meta += planned[program]['realized']
+            meta =  planned[program]['realized']
+            if meta is None:
+                meta = 0
+            total_meta += meta
         planned['total'] = {'realized':total_meta}
         context['planned'] = planned
         #Agrega los rankings
@@ -112,7 +122,18 @@ class GetAreaScoreboard(TemplateView):
         #These analytics are related to the fulfillment of the current monthly goal
         context['planned_monthly'] = MonthlyGoal.objects.filter(office=officeID, program=program.upper()).order_by('year', 'month')
         context['achieved_monthly'] = MonthlyAchievement.objects.filter(office=officeID, program=program.upper()).order_by('month')
+        #This data is related to the planned and achieved goals during the current month
+        current_month = {}
+        current_month_number, current_year_number = map(int, datetime.now().strftime("%m,%Y").split(','))
+        try:
+            current_month['planned'] = MonthlyGoal.objects.get(office=officeID, program=program.upper(), month=current_month_number)
+        except MonthlyGoal.DoesNotExist: 
+            current_month['planned'] = "Falta llenar metas en PODIO"
+        current_month['achieved'] = api.getMonthStats(current_month_number, current_year_number, program.upper(), officeID)
+        context['current_month'] = current_month
         #context['monthly_achievements'] = api.getProgramMonthlyPerformance(programa, 1395)
+        #These analytics are related to the achievements durint a past period of time
+        context['achieved_past_week'] = api.get_past_stats(7, program, officeID)
 
         if program[0].lower() == 'o': #Specific analytics for OGX
             #Context data for total uncontacted EPs
@@ -246,10 +267,43 @@ class GetIMScoreboard(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(GetIMScoreboard, self).get_context_data(**kwargs)
         podioApi = PodioApi('15280717')
-        items = podioApi.get_filtered_items(None, depth=0)
-        total = 0
-        aiesec_mail = 0
+        #Obtiene todos los ítems de la aplicación de base de datos
+        items = podioApi.get_filtered_items(None)
+        #Hace un conteo por área de los miembros con correo AIESECo
+        total = {
+            "total":0,
+            "aiesec_mail": 0,
+            "career_plan": 0,
+            }
+        total_area = {}
         for item in items:
-            total += 1
+            #Primero cuenta el total total, y el total por áreas
+            total['total'] += 1
+            area = item['values'][124721552]['value']['values'][122424946]['value']
+            try:
+                total_area[area]['total'] += 1
+            except KeyError:
+                total_area[area] = {'total': 1}
+            #Ahora cuenta quienes tienen correo aiesec.net o aiesecandes.org
+            email = item['values'][117701824]['value']
+            if "@aiesec.net" in email or "aiesecandes.org" in email:
+                total["aiesec_mail"] += 1
+                try:
+                    total_area[area]['aiesec_mail'] += 1
+                except KeyError:
+                    total_area[area]['aiesec_mail'] = 1
+            #Revisa si llenó el plan carrera
+            try:
+                test = item['values'][129153378]['value']
+                total["career_plan"] += 1
+                try:
+                    total_area[area]['career_plan'] += 1
+                except KeyError:
+                    total_area[area]['career_plan'] = 1
+            except KeyError:
+                pass
+        context['total'] = total
+        context['total_area'] = total_area
         print total
+        print total_area
         return context

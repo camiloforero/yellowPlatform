@@ -16,6 +16,13 @@
 {{mocion.votoForm}}
 {% endfor %}
 </br>
+{% for candidato in candidatoList %}
+<h4>{{candidato.candidato.nombre}}</h4>
+<p>{{candidato.candidato..texto}}</p>
+{{candidato.votoCandidatoForm.errors}}
+{{candidato.votoCandidatoForm}}
+{% endfor %}
+</br>
     <button type="submit" class="btn btn-default">Enviar</button>
 </form>
 

@@ -27,7 +27,7 @@ class Voto(models.Model):
         ('C', 'En contra'),
         ('F', 'A favor'),
         )
-    votante = models.ForeignKey(PlenoDerecho, models.CASCADE)
+    votante = models.ForeignKey(PlenoDerecho, models.CASCADE, related_name="votos")
     mocion = models.ForeignKey(Mocion, models.CASCADE, related_name="votos")
     votacion = models.CharField(max_length=1, choices=VOTING_CHOICES, blank=False)
     def __str__(self):
@@ -35,4 +35,24 @@ class Voto(models.Model):
     class Meta:
         unique_together = ("votante", "mocion")
 
-# Create your models here.
+@python_2_unicode_compatible
+class Candidato(models.Model):
+    nombre = models.CharField(max_length=64)
+    foto = models.ImageField(null=True, blank=True)
+    asamblea = models.CharField(max_length=8)
+    def __str__(self):
+        return "%s" % (self.nombre)
+
+@python_2_unicode_compatible
+class VotoCandidato(models.Model):
+    VOTING_CHOICES = (
+        ('N', 'No confianza'),
+        ('C', 'Confianza'),
+        )
+    votante = models.ForeignKey(PlenoDerecho, models.CASCADE, related_name="votosCandidatos")
+    candidato = models.ForeignKey(Candidato, models.CASCADE, related_name="votosCandidatos")
+    votacion = models.CharField(max_length=1, choices=VOTING_CHOICES, blank=False)
+    def __str__(self):
+        return "%s %s" % (self.candidato, self.votacion)
+    class Meta:
+        unique_together = ("votante", "candidato")

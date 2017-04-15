@@ -77,7 +77,7 @@ def load_suboffices(officeID, suboffice_type, api):
 
 def refresh_rankings_v2():
     print "Refreshing the EXPA rankings"
-    api = expaApi.ExpaApi()
+    api = expaApi.ExpaApi(fail_attempts=5)
     mcs = Office.objects.filter(office_type="MC").order_by('expaID')
     programs = Program.objects.all()
     for mc in mcs:
@@ -85,19 +85,23 @@ def refresh_rankings_v2():
         for program in programs:
             print "Cargando %s" % program.name
             #Loads the performance in the given program for the given MC
-            performance = api.getCountryCurrentYearStats(program.name, mc.expaID)
-            for officeID, values in performance.iteritems():
-            #Recorre todas las oficinas y sus logros para el programa dado
-                #print "Office ID: %s" % officeID
-                #print values
-                #Si los logros de este programa ya existen, se actualizan en la base de datos. Si no existen (sucede cuando algún comité del mundo acaba de abrir un nuevo programa) se crean unos nuevos
-                try:
-                    logros, created = LogrosPrograma.objects.update_or_create(program=program, office_id=officeID, defaults=values)
-                except IntegrityError as e:
-                #Esto quiere decir que probablemente intentó cargar un LC que todavía no existe. Esto pasa cuando se crean nuevos LCs desde la última vez que se actualizó en ranking.
-                    print e
-                    load_suboffices(mc.expaID, "LC", api)
-                    logros, created = LogrosPrograma.objects.update_or_create(program=program, office_id=officeID, defaults=values)
+            try:
+                performance = api.getCountryCurrentYearStats(program.name, mc.expaID)
+                for officeID, values in performance.iteritems():
+                #Recorre todas las oficinas y sus logros para el programa dado
+                    #print "Office ID: %s" % officeID
+                    #print values
+                    #Si los logros de este programa ya existen, se actualizan en la base de datos. Si no existen (sucede cuando algún comité del mundo acaba de abrir un nuevo programa) se crean unos nuevos
+                    try:
+                        logros, created = LogrosPrograma.objects.update_or_create(program=program, office_id=officeID, defaults=values)
+                    except IntegrityError as e:
+                    #Esto quiere decir que probablemente intentó cargar un LC que todavía no existe. Esto pasa cuando se crean nuevos LCs desde la última vez que se actualizó en ranking.
+                        print e
+                        load_suboffices(mc.expaID, "LC", api)
+                        logros, created = LogrosPrograma.objects.update_or_create(program=program, office_id=officeID, defaults=values)
+            except expaApi.APIUnavailableException as e:
+                print "Error cargando el país actual, continuando..."
+                break
 
 def load_monthly_stats():
     print "Refreshing the monthly goals"

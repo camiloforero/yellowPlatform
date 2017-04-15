@@ -11,50 +11,24 @@
         {{achieved.total.realized}}/{{planned.total.realized}}
     </div>
 </div>
-<a href="{% url 'analytics:area_scoreboard' office_name=office_name programa='IGV' %}">
-<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-    <div class="tile-stats">
-        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
-        <div class="count">{{achieved.IGV.realized}}/{{planned.IGV.realized}}</div>
-        <h3>IGV</h3>
-        <p>Matches: {{achieved.IGV.approved}}/{{planned.IGV.approved}}</p>
+{% for product in products %}
+{% with area_achieved=achieved|getattribute:product area_planned=planned|getattribute:product %}
+    <a href="{% url 'analytics:area_scoreboard' office_name=office_name programa=product %}">
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+            <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+            <div class="count">{{area_achieved.realized}}/{{area_planned.realized}}</div>
+            <h3>{{product}}</h3>
+            <p>Matches: {{area_achieved.approved}}/{{area_planned.approved}}</p>
+        </div>
     </div>
-</div>
-</a>
-<a href="{% url 'analytics:area_scoreboard' office_name=office_name programa='OGV' %}">
-<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-    <div class="tile-stats">
-        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
-        <div class="count">{{achieved.OGV.realized}}/{{planned.OGV.realized}}</div>
-        <h3>OGV</h3>
-        <p>Matches: {{achieved.OGV.approved}}/{{planned.OGV.approved}}</p>
-    </div>
-</div>
-</a>
-<a href="{% url 'analytics:area_scoreboard' office_name=office_name programa='IGET' %}">
-<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-    <div class="tile-stats">
-        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
-        <div class="count">{{achieved.IGET.realized}}/{{planned.IGET.realized}}</div>
-        <h3>IGET</h3>
-        <p>Matches: {{achieved.IGET.approved}}/{{planned.IGET.approved}}</p>
-    </div>
-</div>
-</a>
-<a href="{% url 'analytics:area_scoreboard' office_name=office_name programa='OGET' %}">
-<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-    <div class="tile-stats">
-        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
-        <div class="count">{{achieved.OGET.realized}}/{{planned.OGET.realized}}</div>
-        <h3>OGET</h3>
-        <p>Matches: {{achieved.OGET.approved}}/{{planned.OGET.approved}}</p>
-    </div>
-</div>
-</a>
-<div class="col-md-3 col-xs-12 widget widget_tally_box">
+    </a>
+{% endwith %}
+{% endfor %}
+    <div class="col-md-3 col-xs-12 widget widget_tally_box">
             <div class="x_panel fixed_height_390">
               <div class="x_title">
-                <h2>Rendimiento</h2>
+                <h2>Rendimiento<small>(approved)</small></h2>
                 <ul class="nav navbar-right panel_toolbox">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>
@@ -67,55 +41,56 @@
               <div class="x_content">
                 <div style="text-align: center; margin-bottom: 17px">
                   <ul class="verticle_bars list-inline">
+                    {% for product in products %}
+                    {% with area_achieved=achieved|getattribute:product area_planned=planned|getattribute:product %}
                     <li>
                       <div class="progress vertical progress_wide bottom">
-                        <div class="progress-bar progress-bar-dark" role="progressbar" data-transitiongoal="{% widthratio achieved.IGV.realized planned.IGV.realized 100 %}" style="height: {% widthratio achieved.IGV.realized planned.IGV.realized 100 %}%;" aria-valuenow="{% widthratio achieved.IGV.realized planned.IGV.realized 100 %}"></div>
+                        <div class="progress-bar progress-bar-success" role="progressbar" data-transitiongoal="{% widthratio area_achieved.approved area_planned.approved 100 %}" style="height: {% widthratio area_achieved.approved area_planned.approved 100 %}%;" aria-valuenow="{% widthratio area_achieved.approved area_planned.approved 100 %}"></div>
                       </div>
+                      {{product}}
                     </li>
-                    <li>
-                      <div class="progress vertical progress_wide bottom">
-                        <div class="progress-bar progress-bar-gray" role="progressbar" data-transitiongoal="{% widthratio achieved.OGV.realized planned.OGV.realized 100 %}" style="height: {% widthratio achieved.OGV.realized planned.OGV.realized 100 %}%;" aria-valuenow="{% widthratio achieved.OGV.realized planned.OGV.realized 100 %}"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="progress vertical progress_wide bottom">
-                        <div class="progress-bar progress-bar-info" role="progressbar" data-transitiongoal="{% widthratio achieved.IGET.realized planned.IGET.realized 100 %}" style="height: {% widthratio achieved.IGET.realized planned.IGET.realized 100 %}%;" aria-valuenow="{% widthratio achieved.IGET.realized planned.IGET.realized 100 %}"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="progress vertical progress_wide bottom">
-                        <div class="progress-bar progress-bar-success" role="progressbar" data-transitiongoal="{% widthratio achieved.OGET.realized planned.OGET.realized 100 %}" style="height: {% widthratio achieved.OGET.realized planned.OGET.realized 100 %}%;" aria-valuenow="{% widthratio achieved.OGET.realized planned.OGET.realized 100 %}"></div>
-                      </div>
-                    </li>
+                    {% endwith %}
+                    {% endfor %}
                   </ul>
                 </div>
                 <div class="divider"></div>
+            </div>
+        </div>
+    </div>
 
-                <ul class="legend list-unstyled">
-                  <li>
-                    <p>
-                      <span class="icon"><i class="fa fa-square dark"></i></span> <span class="name">IGV</span>
-                    </p>
+    <div class="col-md-3 col-xs-12 widget widget_tally_box">
+            <div class="x_panel fixed_height_390">
+              <div class="x_title">
+                <h2>Rendimiento<small>(realized)</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>
-                  <li>
-                    <p>
-                      <span class="icon"><i class="fa fa-square grey"></i></span> <span class="name">OGV</span>
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      <span class="icon"><i class="fa fa-square blue"></i></span> <span class="name">IGET</span>
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      <span class="icon"><i class="fa fa-square green"></i></span> <span class="name">OGET</span>
-                    </p>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
                   </li>
                 </ul>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="x_content">
+                <div style="text-align: center; margin-bottom: 17px">
+                  <ul class="verticle_bars list-inline">
+                    {% for product in products %}
+                    {% with area_achieved=achieved|getattribute:product area_planned=planned|getattribute:product %}
+                    <li>
+                      <div class="progress vertical progress_wide bottom">
+                        <div class="progress-bar progress-bar-success" role="progressbar" data-transitiongoal="{% widthratio area_achieved.realized area_planned.realized 100 %}" style="height: {% widthratio area_achieved.realized area_planned.realized 100 %}%;" aria-valuenow="{% widthratio area_achieved.realized area_planned.realized 100 %}"></div>
+                      </div>
+                      {{product}}
+                    </li>
+                    {% endwith %}
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="divider"></div>
             </div>
+        </div>
     </div>
-</div>
+
 <div class="col-md-6 col-sm-12">
 <div class="x_panel">
     {% for metric, values in rankings.items %}

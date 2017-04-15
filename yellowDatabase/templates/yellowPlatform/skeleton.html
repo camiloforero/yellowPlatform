@@ -15,9 +15,31 @@
         <link rel="stylesheet" href="{% static "css/style.css"%}"/>
     </head>
 
-    <body class="{% block body-class %} emptyBody {% endblock %}">
-    {% block base_body %}{% endblock %}
-
+    <body class="nav-md footer_fixed {% block body-class %} emptyBody {% endblock %}">
+        <div class="top_nav">
+              <nav class="nav_menu">
+                  <ul class="nav navbar-nav">
+                    <li>
+                    <img width="320" src="{% static "logoSmarthub_transparent.png" %}"/>
+                    </li>
+                    <li>
+                    <h1>{% block page-header %}Empty header{% endblock %}</h1>
+                    </li>
+                  </ul>
+              </nav>
+        </div>
+    <div class="container-fluid body" style="padding-top:80px">
+        <div class="main_container">
+            {% block base_body %}{% endblock %}
+            <footer>
+                <div class="pull-left">Powered by AIESEC Andes and AIESEC in Colombia. Created by <a href="mailto:camilo.forero@aiesec.net">Camilo Forero</a></div>
+                  <div class="pull-right">
+                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                  </div>
+                  <div class="clearfix"></div>
+            </footer>
+        </div>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="{% static "gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js" %}"></script>

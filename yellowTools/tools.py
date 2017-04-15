@@ -29,13 +29,16 @@ def count_applications(applications):
         except KeyError: #Si no existe un EP con esa llave dentro del diccionario es que es nuevo
             ep = {
                 'full_name':person['full_name'],
-                'gip_apps':0,
-                'gcdp_apps':0,
+                'gv_apps':0,
+                'gt_apps':0,
+                'ge_apps':0,
                 }
         if application['opportunity']['programmes'][0]['id']==1:
-            ep['gcdp_apps'] += 1
+            ep['gv_apps'] += 1
         elif application['opportunity']['programmes'][0]['id']==2:
-            ep['gip_apps'] += 1 
+            ep['gt_apps'] += 1 
+        elif application['opportunity']['programmes'][0]['id']==5:
+            ep['ge_apps'] += 1 
         eps[person['id']] = ep
     return eps
 

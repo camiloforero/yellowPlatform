@@ -9,7 +9,8 @@
 <thead>
 <tr>
     <th>Votante</th>
-    <th>Número de votos</th>
+    <th>Número de votos a mociones</th>
+    <th>Número de votos a candidatos</th>
 </tr>
 </thead>
 <tbody>
@@ -17,6 +18,7 @@
 <tr>
     <td>{{votante.codigo}}</td>
     <td>{{votante.num_votos}}</td>
+    <td>{{votante.num_votos_candidatos}}</td>
 </tr>
 {% endfor %}
 </tbody>

@@ -8,7 +8,7 @@
 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
     <div class="tile-stats">
         <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
-        <div class="count">3/6</div>
+        <div class="count">4/6</div>
         <h3>Capacitaciones presenciales</h3>
     </div>
 </div>
@@ -27,10 +27,10 @@
     </div>
 </div>
 
-<div class="col-md-3 col-xs-12 widget widget_tally_box">
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 widget widget_tally_box">
     <div class="x_panel">
           <div class="x_title">
-            <h2>Membresía con correo AIESECo</h2>
+            <h2>Correo AIESECo</h2>
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
@@ -42,8 +42,8 @@
           <div class="x_content">
 
             <div style="text-align: center; margin-bottom: 17px">
-              <span class="chart" data-percent="28">
-                                  <span class="percent">28</span>
+              <span class="chart" data-percent="{%widthratio total.aiesec_mail total.total 100%}">
+                                  <span class="percent">{%widthratio total.aiesec_mail total.total 100%}</span>
                 <canvas height="110" width="110"></canvas>
                 <canvas height="110" width="110"></canvas></span>
             </div>
@@ -53,11 +53,11 @@
             <div class="flex">
               <ul class="list-inline count2">
                 <li>
-                  <h3>174</h3>
+                  <h3>{{total.total}}</h3>
                   <span>Total</span>
                 </li>
                 <li>
-                  <h3>50</h3>
+                  <h3>{{total.aiesec_mail}}</h3>
                   <span>Actual</span>
                 </li>
               </ul>
@@ -70,7 +70,7 @@
 <div class="col-md-3 col-xs-12 widget widget_tally_box">
     <div class="x_panel">
           <div class="x_title">
-            <h2>Miembros con plan carrera en plataforma</h2>
+            <h2>Plan Carrera</h2>
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
@@ -82,8 +82,8 @@
           <div class="x_content">
 
             <div style="text-align: center; margin-bottom: 17px">
-              <span class="chart" data-percent="0">
-                                  <span class="percent">0</span>
+              <span class="chart" data-percent="{%widthratio total.career_plan total.total 100%}">
+                                  <span class="percent">{%widthratio total.career_plan total.total 100%}</span>
                 <canvas height="110" width="110"></canvas>
                 <canvas height="110" width="110"></canvas></span>
             </div>
@@ -93,11 +93,11 @@
             <div class="flex">
               <ul class="list-inline count2">
                 <li>
-                  <h3>174</h3>
+                  <h3>{{total.total}}</h3>
                   <span>Total</span>
                 </li>
                 <li>
-                  <h3>0</h3>
+                  <h3>{{total.career_plan}}</h3>
                   <span>Actual</span>
                 </li>
               </ul>
@@ -108,7 +108,7 @@
     </div>
 
 
-    <div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="col-md-4 col-sm-3 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
             <h2>Tareas <small>Done/not done</small></h2>
@@ -145,6 +145,37 @@
         </div>
       </div>
     </div>
+
+<div class="col-md-6 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Miembros con plan carrera en plataforma</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Area</th>
+                    <th>Miembros</th>
+                    <th>% con correo AIESECo</th>
+                    <th>% con plan carrera</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for area, data in total_area.items %}
+                <tr>
+                    <td>{{area}}</td>
+                    <td>{{data.total}}</td>
+                    <td>{% widthratio data.aiesec_mail data.total 100 %}%</td>
+                    <td>0{% widthratio data.career_plan data.total 100 %}%</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

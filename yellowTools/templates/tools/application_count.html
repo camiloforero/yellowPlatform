@@ -10,8 +10,9 @@
         <tr>
             <th>Nombre</th>
             <th>EXPA ID</th>
-            <th>Aplicaciones GIP</th>
-            <th>Aplicaciones GCDP</th>
+            <th>Aplicaciones GV</th>
+            <th>Aplicaciones GT</th>
+            <th>Aplicaciones GE</th>
         </tr>
     </thead>
     <tbody>
@@ -19,8 +20,9 @@
         <tr>
             <td>{{persona.full_name}}</td>
             <td><a href="https://experience.aiesec.org/#/people/{{id}}">{{id}}</a></td>
-            <td>{{persona.gip_apps}}</td>
-            <td>{{persona.gcdp_apps}}</td>
+            <td>{{persona.gv_apps}}</td>
+            <td>{{persona.gt_apps}}</td>
+            <td>{{persona.ge_apps}}</td>
         </tr>
     {% endfor %}                
     </tbody>

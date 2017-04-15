@@ -10,3 +10,8 @@ class VotoForm(forms.ModelForm):
         fields = ['mocion', 'votacion']
         widgets={'mocion': forms.HiddenInput}
 
+class VotoCandidatoForm(forms.ModelForm):
+    class Meta:
+        model = models.VotoCandidato
+        fields = ['candidato', 'votacion']
+        widgets={'candidato': forms.HiddenInput}

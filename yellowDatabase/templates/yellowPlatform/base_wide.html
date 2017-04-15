@@ -1,14 +1,9 @@
 {% extends 'yellowPlatform/skeleton.html' %}
 {% load staticfiles %}
 {% block base_body %}
-    <div class="container-fluid">
         <div class="row">
-            <header>
-                <h1>{% block page-header %}empty header{% endblock %}</h1>
-            </header>
             <main>
                 {% block body %}<h3>Si estás viendo esto, no estás reemplazando el body_block de manera apropiada</h3>{% endblock %}
             </main>
         </div>
-    </div>
 {% endblock %}

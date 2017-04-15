@@ -86,17 +86,54 @@
           </div>
         </div>
     </div>
+
+<div class="col-md-3 col-sm-6">
+    <div class="x_panel">
+          <h2 class="line_30">Últimos 7 días</h2>
+          <table class="countries_list">
+            <tbody>
+              <tr>
+                <td>Applications</td>
+                <td class="fs15 fw700 text-right">{{achieved_past_week.applications}}</td>
+              </tr>
+              <tr>
+                <td>Accepted</td>
+                <td class="fs15 fw700 text-right">{{achieved_past_week.accepted}}</td>
+              </tr>
+              <tr>
+                <td>Approved</td>
+                <td class="fs15 fw700 text-right">{{achieved_past_week.approved}}</td>
+              </tr>
+              <tr>
+                <td>Realized</td>
+                <td class="fs15 fw700 text-right">{{achieved_past_week.realized}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+
     <div class="col-md-6 col-sm-12 col-xs-12">
       <div class="dashboard_graph">
         <div class="row x_title">
             <h3>Rendimiento <small>Realizaciones</small></h3>
         </div>
 
-        <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-9 col-sm-9 col-xs-9">
           <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
           <div style="width: 100%;">
             <div id="canvas_dahs" class="demo-placeholder" style="width: 100%; height: 270px; padding: 0px; position: relative;"></div>
           </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="sidebar-widget">
+                <h4>Realizaciones (mes actual)</h4>
+                <canvas width="150" height="80" id="month_realized_gauge" class="" style="width: 160px; height: 100px;"></canvas>
+                <div class="goal-wrapper">
+                  <span id="month_realized_text" class="gauge-value pull-left">0</span>
+                  <span id="goal-text" class="goal-value pull-right">{{current_month.planned.realized}}</span>
+                </div>
+            </div>
         </div>
         
 
@@ -104,6 +141,33 @@
       </div>
     </div>
 
+    <div class="col-md-6 col-sm-12 col-xs-12">
+      <div class="dashboard_graph">
+        <div class="row x_title">
+            <h3>Rendimiento <small>Approved</small></h3>
+        </div>
+
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+          <div style="width: 100%;">
+            <div id="flot_approved" class="demo-placeholder" style="width: 100%; height: 270px; padding: 0px; position: relative;"></div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="sidebar-widget">
+                <h4>Approved</h4> (mes actual)</h4>
+                <canvas width="150" height="80" id="month_approved_gauge" class="" style="width: 160px; height: 100px;"></canvas>
+                <div class="goal-wrapper">
+                  <span id="month_approved_text" class="gauge-value pull-left">0</span>
+                  <span id="goal-text" class="goal-value pull-right">{{current_month.planned.approved}}</span>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
 
 <div class="col-md-6 col-sm-12">
 <div class="x_panel">
@@ -176,6 +240,9 @@
 <script src="{% static "gentelella/production/js/flot/jquery.flot.orderBars.js" %}"></script>
 <script src="{% static "gentelella/production/js/flot/jquery.flot.spline.js" %}"></script>
 <script src="{% static "gentelella/production/js/flot/curvedLines.js" %}"></script>
+
+<!-- gauge.js -->
+<script src="{% static "gentelella/vendors/gauge.js/dist/gauge.min.js" %}"></script>
 <script>
       $(function() {
         $('.chart').easyPieChart({
@@ -196,20 +263,31 @@
 <!-- Flot. Para los gráficos de desempeño en matches y realizes -->
     <script>
       $(document).ready(function() {
-        var data1 = [
+        var achieved_realized = [
         {% for goal in achieved_monthly %}
           [gd(2016, {{goal.month}}), {{goal.realized}}],
         {% endfor %}
         ];
 
-        var data2 = [
+        var planned_realized = [
         {% for goal in planned_monthly %}
           [gd({{goal.year}}, {{goal.month}}), {{goal.realized}}],
         {% endfor %}
         ];
-        $("#canvas_dahs").length && $.plot($("#canvas_dahs"), [
-          data1, data2
-        ], {
+
+        var achieved_approved = [
+        {% for goal in achieved_monthly %}
+          [gd(2016, {{goal.month}}), {{goal.approved}}],
+        {% endfor %}
+        ];
+
+        var planned_approved = [
+        {% for goal in planned_monthly %}
+          [gd({{goal.year}}, {{goal.month}}), {{goal.approved}}],
+        {% endfor %}
+        ];
+
+        var flot_graph_settings = {
           series: {
             lines: {
               show: false,
@@ -252,7 +330,19 @@
             tickColor: "rgba(51, 51, 51, 0.06)",
           },
           tooltip: false
-        });
+        };
+
+        $("#canvas_dahs").length && $.plot(
+            $("#canvas_dahs"), 
+            [achieved_realized, planned_realized],
+            flot_graph_settings
+        );
+
+        $("#flot_approved").length && $.plot(
+            $("#flot_approved"),
+            [achieved_approved, planned_approved],
+            flot_graph_settings
+        );
 
         function gd(year, month) {
           return new Date(year, month - 1, 1).getTime();
@@ -260,4 +350,42 @@
       });
     </script>
 <!-- /Flot -->
+<!-- gauge.js -->
+    <script>
+      var opts = {
+        lines: 12,
+        angle: 0,
+        lineWidth: 0.4,
+        pointer: {
+          length: 0.75,
+          strokeWidth: 0.042,
+          color: '#1D212A'
+        },
+        limitMax: 'false',
+        colorStart: '#1ABC9C',
+        colorStop: '#1ABC9C',
+        strokeColor: '#F0F3F3',
+        generateGradient: true
+      };
+      //Para las realizaciones
+      var target = document.getElementById('month_realized_gauge'),
+          realized_gauge = new Gauge(target).setOptions(opts);
+
+      realized_gauge.maxValue = {{current_month.planned.realized}};
+      realized_gauge.animationSpeed = 32;
+      realized_gauge.set(1);
+      realized_gauge.set({{current_month.achieved.realized}});
+      realized_gauge.setTextField(document.getElementById("month_realized_text"));
+      //Para los approved
+      var target = document.getElementById('month_approved_gauge'),
+          approved_gauge = new Gauge(target).setOptions(opts);
+
+      approved_gauge.maxValue = {{current_month.planned.approved}};
+      approved_gauge.animationSpeed = 32;
+      approved_gauge.set(1);
+      approved_gauge.set({{current_month.achieved.approved}});
+      approved_gauge.setTextField(document.getElementById("month_approved_text"));
+    </script>
+
+
 {% endblock %}

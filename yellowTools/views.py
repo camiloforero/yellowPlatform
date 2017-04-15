@@ -33,10 +33,19 @@ class GetMatchableEPs(TemplateView):
     def get_context_data(self, **kwargs):
         api = expaApi.ExpaApi()
         context = super(GetMatchableEPs, self).get_context_data(**kwargs)
-        eps = api.get_matchable_EPs(1395)['eps']
+        try:
+            office_name = self.kwargs['office_name']
+        except KeyError:
+            office_name = 'ANDES'
+        office = Office.objects.get(name=office_name.replace('_', ' '))
+        officeID = office.expaID
+        context['office_name'] = office_name
+        eps = api.get_matchable_EPs(officeID)['eps']
+        print eps
+        print "TEST"
         eps = tools.set_program(eps)
         context['personas'] = eps 
-        context['header'] = 'AIESEC Andes EP Search Tool'
+        context['header'] = 'AIESEC %s EP Search Tool' % office_name
         return context
 
 class GetUncontactedEPs(TemplateView):
@@ -72,7 +81,7 @@ class GetEPs(TemplateView):
         start_date = '%s-%s-01' % (self.kwargs['year'], self.kwargs['month'])
         end_date =  '%s-%s-%s' % (self.kwargs['year'], self.kwargs['month'], calendar.monthrange(int(self.kwargs['year']), int(self.kwargs['month']))[1])
         context['applications'] = api.get_interactions(self.kwargs['interaction'], officeID, self.kwargs['program'], start_date, end_date)['items']
-        context['header'] = 'Realized EPs'
+        context['header'] = '%s EPs' % self.kwargs['interaction']
         return context
 
 class GetRealizedEPs(TemplateView):
@@ -107,7 +116,7 @@ class CountApplications(TemplateView):
         applications = api.get_past_interactions('applied', 7, officeID, today=True)
         eps = tools.count_applications(applications)
         context['personas'] = eps 
-        context['header'] = 'Aplicaciones a oportunidades en AIESEC Andes'
+        context['header'] = 'Aplicaciones a oportunidades en AIESEC %s' % office_name
         return context
 
 class ContactedRanking(TemplateView):

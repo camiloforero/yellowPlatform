@@ -31,5 +31,27 @@
 {% endfor %}
 </tbody>
 </table>
+<table class="table table-responsive">
+<thead>
+<tr>
+    <th>Candidato</th>
+    <th>Votos de no confianza</th>
+    <th>Votos de confianza</th>
+    <th>Quorum deliberatorio</th>
+    <th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+{% for candidato, resultados in votacionesCandidatos %}
+<tr>
+    <td>{{candidato}}</td>
+    <td>{{resultados.N}}</td>
+    <td>{{resultados.C}}</td>
+    <td>{{resultados.Q}}</td>
+    <td>{{resultados.Resultado}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
 {% endblock %}
 {% block scripts %}{% endblock %}
