@@ -78,6 +78,7 @@ class LogrosPrograma(models.Model):
     office = models.ForeignKey(Office, models.CASCADE, related_name='logros')
     approved = models.PositiveSmallIntegerField()
     realized = models.PositiveSmallIntegerField()
+    completed = models.PositiveSmallIntegerField()
     def __str__(self):
         return unicode(self.program) + ' ' + unicode(self.office)
     class Meta:
@@ -89,10 +90,11 @@ class MonthlyGoal(models.Model):
     year = models.PositiveSmallIntegerField()
     approved = models.PositiveSmallIntegerField(null=True)
     realized = models.PositiveSmallIntegerField(null=True)
+    completed = models.PositiveSmallIntegerField(null=True)
     program = models.ForeignKey(Program, models.CASCADE, related_name='monthly_goals')
     office = models.ForeignKey(Office, models.CASCADE, related_name='monthly_goals')
     def __str__(self):
-        return 'Meta: ' + self.program_id + ' - Mes ' + str(self.month) + ' - Año: ' + str(self.year)
+        return str(self.office_id) + ' - Meta: ' + self.program_id + ' - Mes ' + str(self.month) + ' - Año: ' + str(self.year)
     class Meta:
         unique_together = ('month', 'year', 'program', 'office')
 
@@ -104,7 +106,7 @@ class MonthlyAchievement(models.Model):
     program = models.ForeignKey(Program, models.CASCADE, related_name='monthly_achievements')
     office = models.ForeignKey(Office, models.CASCADE, related_name='monthly_achievements')
     def __str__(self):
-        return 'Logro: ' + self.program_id + ' - Mes ' + str(self.month)
+        return self.office_id + ' - Logro: ' + self.program_id + ' - Mes ' + str(self.month)
     class Meta:
         unique_together = ('month', 'program', 'office')
 

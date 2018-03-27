@@ -230,14 +230,13 @@ class GetRankingIndex(TemplateView):
 
 
 class GetRanking(ListView):
-    model = LC
     context_object_name = 'lcs'
     template_name = "analytics/ranking.html"
     def get_queryset(self):
         office_name = self.kwargs['office_name']
         office = Office.objects.select_related('superoffice', 'superoffice__superoffice').get(name=office_name.replace('_', ' '))
         officeID = office.expaID
-        queryFilter = {"office__office_type":"LC"}  #Crea un diccionario donde se guardarán todos los filtros de la query
+        queryFilter = {"office__office_type":office.office_type}  #Crea un diccionario donde se guardarán todos los filtros de la query
         #Agrega filtros que restringen los logros que se sacan de la base de datos a sólo los de la misma región o los del mismo LC. No se hace nada si es global, y se lanza una excepción si se pide otra cosa
         if self.kwargs['ranking'] == 'global':
             pass
@@ -257,6 +256,53 @@ class GetRanking(ListView):
         context = super(GetRanking, self).get_context_data(**kwargs)
         context['programa'] = self.kwargs['programa']
         context['ranking'] = self.kwargs['ranking']
+        return context
+
+
+class GetRanking_v2(ListView):
+    """
+    This one is different from the previous one because instead of the target LC, it uses the area we want rankings of (a country, a region, or the world) and the kind of offices we want to appear there (lcs, mcs or regions) in order to create the rankings
+    area: which area we want to restrict the ranking. It should be a country, a region, or AI
+    depth: whether we want to see LCs, MCs or regions inside the area
+    """
+    context_object_name = 'lcs'
+    template_name = "analytics/ranking.html"
+    def get_queryset(self):
+        values = {
+            'AI': 0,
+            'Region': 1,
+            'MC': 2,
+            'LC': 3,
+        }
+        area_name = self.kwargs['area']
+        area = Office.objects.select_related('superoffice', 'superoffice__superoffice').get(name=area_name.replace('_', ' '))
+        area_id = area.expaID
+        area_type = area.office_type
+        queryFilter = {"office__office_type":area_type}  #Crea un diccionario donde se guardarán todos los filtros de la query
+        queryFilter = {"office__office_type":self.kwargs['depth']}  #Crea un diccionario donde se guardarán todos los filtros de la query
+        #Agrega filtros que restringen los logros que se sacan de la base de datos a sólo los de la misma región o los del mismo LC. No se hace nada si es global, y se lanza una excepción si se pide otra cosa
+        loop_length = values[self.kwargs['depth']] - values[area_type] 
+        debug = ''
+        debug += ''
+        if loop_length <= 0:
+            raise Http404('Invalid ranking combination')
+        else:
+            depth_filter = 'office%s__superoffice_id' # This param means how many suboffices up will the final query go to find the right area.
+            addon = '' # represents __superoffice added
+            for i in range(loop_length - 1):
+                addon += '__superoffice'
+            queryFilter[depth_filter % addon] = area_id
+        #Filtra solo los LogrosPrograma que hacen parte del programa especificado, al menos que busque a Total, caso en el cual no se agrega el filtro, mostrando entonces los logros de los 4 programas
+        if self.kwargs['programa'].lower()!='total': # If not asking for total rankings, will filter by program
+            queryFilter['program__name__iexact'] = self.kwargs['programa']
+            return LogrosPrograma.objects.select_related('office__superoffice').filter(**queryFilter).values('office__name', 'office__superoffice__name', 'approved', 'realized').order_by('-' + self.kwargs['metric'])
+        else: #Si es total
+            return LogrosPrograma.objects.select_related('office__superoffice').filter(**queryFilter).values('office__name', 'office__superoffice__name').annotate(approved=Sum('approved'), realized=Sum('realized')).order_by('-' + self.kwargs['metric'])
+    def get_context_data(self, **kwargs):
+        context = super(GetRanking_v2, self).get_context_data(**kwargs)
+        context['programa'] = self.kwargs['programa']
+        context['ranking'] = self.kwargs['area']
+        context['metric'] = self.kwargs['metric']
         return context
 
 

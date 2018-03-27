@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from . import sensitive_settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$lrsbzlhxlqe(2_s(k3hbzo=87^up99uq3tcmgn%aw8xj5v_gt'
+SECRET_KEY = sensitive_settings.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,13 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_admin_generator',
-    'djangobower',
     'webodt',
     'django_podio',
     'django_expa',
     'colorful',
     'tinymce',
+    'anymail',
     'django_wysiwyg',
     'widget_tweaks',
     'django_mailTemplates',
@@ -136,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-co'
 
-TIME_ZONE = 'America/Bogota'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -197,7 +197,6 @@ STATIC_ROOT = '/var/www/html/static/'
 STATICFILES_FINDERS = (#Para django-bower
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'djangobower.finders.BowerFinder',
     )
 BOWER_COMPONENTS_ROOT = '/var/www/yellowPlatform/components/'
 
@@ -211,9 +210,8 @@ MEDIA_ROOT = '/var/www/html/media/'
 PODIO_ROOT = '/var/www/yellowPlatform/podioHooks/'
 
 # Settings for django_mailgun
-EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
-MAILGUN_ACCESS_KEY = 'key-b836453079daf2c10368358f26317f9e'
-MAILGUN_SERVER_NAME = 'aiesecandes.org'
+EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+ANYMAIL = sensitive_settings.ANYMAIL
 
 #Settings for webODT
 WEBODT_TEMPLATE_PATH = MEDIA_ROOT + 'odtTemplates/'

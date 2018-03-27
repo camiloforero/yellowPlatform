@@ -60,11 +60,21 @@ def load_suboffices(officeID, suboffice_type, api):
             }
             item, created = Office.objects.update_or_create(expaID=so['id'], defaults=values)
         except IntegrityError as e:
+            #Because of the way the update or create works, a constraint other than the primary key is being violated here. It must be the unique name constraint. Therefore we will attempt to create a new LC with a modified version of the name.
+            lc_number = 2
+            print "Ya existe esta oficina"
             print e
-            superoffice = Office.objects.get(expaID=officeID)
-            values['name'] = so['name'] + '_' + superoffice.name
-            item, created = Office.objects.update_or_create(expaID=so['id'], defaults=values)
-            print item.name
+            while True:
+                try:
+                    values['name'] = so['name'] + '_' + str(lc_number)
+                    print "Nuevo nombre"
+                    print values['name']
+                    item, created = Office.objects.update_or_create(expaID=so['id'], defaults=values)
+                    print "Nuevo LC creado"
+                    break
+                except IntegrityError as e2:
+                    lc_number += 1
+                    print "todavía existe, continuando..."
         if suboffice_type=="Region":
             sub_suboffice_type = "MC"
         elif suboffice_type=="MC":
@@ -77,13 +87,12 @@ def load_suboffices(officeID, suboffice_type, api):
 
 def refresh_rankings_v2():
     print "Refreshing the EXPA rankings"
-    api = expaApi.ExpaApi(fail_attempts=5)
+    api = expaApi.ExpaApi(account='kevin.gonzalez@aiesec.net', fail_attempts=5)
     mcs = Office.objects.filter(office_type="MC").order_by('expaID')
     programs = Program.objects.all()
     for mc in mcs:
         print "Cargando datos del MC %s" % mc.name
         for program in programs:
-            print "Cargando %s" % program.name
             #Loads the performance in the given program for the given MC
             try:
                 performance = api.getCountryCurrentYearStats(program.name, mc.expaID)
@@ -92,15 +101,22 @@ def refresh_rankings_v2():
                     #print "Office ID: %s" % officeID
                     #print values
                     #Si los logros de este programa ya existen, se actualizan en la base de datos. Si no existen (sucede cuando algún comité del mundo acaba de abrir un nuevo programa) se crean unos nuevos
+                    suboffices_loaded = False  # This keeps track on whether suboffices have already been loaded at least once. If that's the case, then empty LCs will be ignored.
                     try:
                         logros, created = LogrosPrograma.objects.update_or_create(program=program, office_id=officeID, defaults=values)
                     except IntegrityError as e:
                     #Esto quiere decir que probablemente intentó cargar un LC que todavía no existe. Esto pasa cuando se crean nuevos LCs desde la última vez que se actualizó en ranking.
+                        print "Integrity error loading data of LC %s" % officeID
                         print e
-                        load_suboffices(mc.expaID, "LC", api)
-                        logros, created = LogrosPrograma.objects.update_or_create(program=program, office_id=officeID, defaults=values)
+                        if not suboffices_loaded:
+                            try:
+                                load_suboffices(mc.expaID, "LC", api)
+                                logros, created = LogrosPrograma.objects.update_or_create(program=program, office_id=officeID, defaults=values)
+                            except IntegrityError as e2:
+                                print "Error al intentar cargar los logros después de cargar las suboficinas. Probablemente el LC ya no existe. Ignorando..."
+                                print e2
             except expaApi.APIUnavailableException as e:
-                print "Error cargando el país actual, continuando..."
+                print "Error de EXPA cargando el país actual, continuando..."
                 break
 
 def load_monthly_stats():
@@ -127,9 +143,12 @@ def load_monthly_stats():
                         logros, created = MonthlyAchievement.objects.update_or_create(program=program, office_id=officeID, month=mes, defaults=values)
                     except IntegrityError as e:
                     #Esto quiere decir que probablemente intentó cargar un LC que todavía no existe. Esto pasa cuando se crean nuevos LCs desde la última vez que se actualizó en ranking.
-                        print e
-                        load_suboffices(mc.expaID, "LC", api)
-                        logros, created = MonthlyAchievement.objects.update_or_create(program=program, office_id=officeID, month=mes, defaults=values)
+                        print "Un nuevo LC ha sido agregado. Cargando..."
+                        try:
+                            load_suboffices(mc.expaID, "LC", api)
+                            logros, created = MonthlyAchievement.objects.update_or_create(program=program, office_id=officeID, month=mes, defaults=values)
+                        except IntegrityError as e:
+                            print "Double integrity error, aborting current cycle"
 #########PODIO Loaders###########
 #Los scripts que cargan datos de o a PODIO relacionados con las metas
 def load_colombia_lcs():
@@ -145,27 +164,26 @@ def load_lc_goals():
     """
     #Un diccionario que asocia los field_ids de la aplicación con un mes
     month_dict = {
-        130505516:(1, 2016),
-        130505517:(2, 2016),
-        130505518:(3, 2016),
-        130505519:(4, 2016),
-        130505520:(5, 2016),
-        130505521:(6, 2016),
-        130505522:(7, 2016),
-        130505523:(8, 2016),
-        130505524:(9, 2016),
-        130505525:(10, 2016),
-        130505526:(11, 2016),
-        130505527:(12, 2016),
-        130652156:(1, 2017),
+        139291307:(2, 2018),
+        139291308:(3, 2018),
+        139291309:(4, 2018),
+        139291310:(5, 2018),
+        139291311:(6, 2018),
+        139291312:(7, 2018),
+        139291313:(8, 2018),
+        139291314:(9, 2018),
+        139291315:(10, 2018),
+        139291316:(11, 2018),
+        139291317:(12, 2018),
+        139291318:(1, 2019),
     }
-    podioApi = api.PodioApi(16759334)
+    podioApi = api.PodioApi(17770429)
     items = podioApi.get_filtered_items({})
     for item in items:
         #Se crea un diccionario que luego entra como parámetro a la creación de las metas.
         create_dict = {
-            'program_id':item['values'][130504336]['value'], #Para obtener el valor del programa del item de PODIO
-            'office_id':item['values'][130504335]['value']['values'][130513591]['value'], #Para obtener el ID del LC del related item "LC"
+            'program_id':item['values'][139291304]['value'], #Para obtener el valor del programa del item de PODIO
+            'office_id':item['values'][139291303]['value']['values'][130513591]['value'], #Para obtener el ID del LC del related item "LC"
         }
         month_goals = tools.dictSwitch(item['values'], month_dict, ignore_unknown=True)
         #Recorre todos los meses en el diccionario y crea un objeto de tipo MonthlyGoal para cada uno de ellos
@@ -173,7 +191,7 @@ def load_lc_goals():
             create_dict['month'] = date[0]
             create_dict['year'] = date[1]
             create_dict['defaults']= {
-                item['values'][130507913]['value'].lower():goals['value'].split('.')[0]#Obtiene la meta, eliminando decimales, y la asigna al approved o al realized según sea el caso
+                item['values'][139291305]['value'].lower():goals['value'].split('.')[0]#Obtiene la meta, eliminando decimales, y la asigna al approved o al realized según sea el caso
             }
             print create_dict
             MonthlyGoal.objects.update_or_create(**create_dict)

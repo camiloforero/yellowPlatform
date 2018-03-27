@@ -1,6 +1,6 @@
 # coding=utf-8
 from django.contrib import admin
-from .models import MetaPrograma, MonthlyGoal, YearlyGoal, Office, Program
+from .models import MetaPrograma, MonthlyGoal, YearlyGoal, Office, Program, Member
 
 @admin.register(MetaPrograma)
 class MetaProgramaAdmin(admin.ModelAdmin):
@@ -23,4 +23,4 @@ class LCAdmin(admin.ModelAdmin):
 class ProgramAdmin(admin.ModelAdmin):
     list_display = ('__str__',)
 
-
+admin.site.register(Member)

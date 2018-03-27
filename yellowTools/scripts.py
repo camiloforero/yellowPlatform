@@ -7,8 +7,11 @@ from yellowAnalytics.models import Office, Member
 def load_country_EBs(expaID):
     api = expaApi.ExpaApi()
     eb_data = api.getCountryEBs(expaID)
+    mc_object = Office.objects.get(expaID)
+    print "Cargando MC %s " % mc_object.name
     for lc in eb_data:
         lc_object = Office.objects.get(expaID=lc['expaID'])
+        print "Cargando EBs de %s " % lc_object.name
         for cargo in lc['cargos']:
             try:
                 member = Member(office_id=lc['expaID'], expaID=cargo['expaID'] , name=cargo['name'], role=cargo['cargo'], phone=cargo['contactData'].get('phone'),email=cargo['contactData'].get('email'), alt_email=cargo['contactData'].get('altMail'), facebook=cargo['contactData'].get('facebook'))
