@@ -1,0 +1,525 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+
+{% block title %}{{program|upper}} Scoreboard: AIESEC in {{office_name}}{% endblock %}
+{% block page-header %}Scoreboard {{program|upper}}: AIESEC {{office_name}}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<div class="col-md-10 col-sm-8 col-xs-12">
+    <div class="x_panel">
+
+      <div class="x_title">
+        <h1>{{wig.name|capfirst}}</h1>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="x_content">
+        <div style="height: 50px" class="progress">
+            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{wig.executed}}" aria-valuemin="0" aria-valuemax="{{wig.planned}}" style="size:20px; width: {% widthratio wig.executed wig.planned 100 %}%">
+                {{wig.executed}}/{{wig.planned}}
+            </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+
+<div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-calendar"></i>
+        </div>
+        <div class="count">{{countdown}}</div>
+
+        <h3>Days<br/>left!</h3>
+    </div>
+</div>
+
+<div class="col-md-9 col-xs-12">
+    <div class="x_panel">
+
+      <div class="x_title">
+        <h2>Performance</h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+
+          <div class="x_content">
+            <div class="row">
+            {% for metric in year_metrics %}
+            <div class="col-lg-3 col-xs-6">
+
+            <div style="text-align: center; margin-bottom: 17px">
+                <h3 class="name">{{metric.name|capfirst}}</h3>
+              <span class="chart" data-percent="{% widthratio metric.executed metric.planned 100 %}">
+                                  <span class="percent">{% widthratio metric.executed metric.planned 100 %}</span>
+              <canvas height="110" width="110"></canvas></span>
+            </div>
+            <div class="pie_bg" style="text-align: center; display: none; margin-bottom: 17px">
+              <canvas id="canvas_doughnut" height="130"></canvas>
+            </div>
+            <div class="flex">
+              <ul class="list-inline count2">
+                <li>
+                  <h3>{{metric.planned}}</h3>
+                  <span>Planned</span>
+                </li>
+                <li>
+                  <h3>{{metric.executed}}</h3>
+                  <span>Executed</span>
+                </li>
+                <li>
+                  <h3>{{metric.gap}}</h3>
+                  <span>Gap</span>
+                </li>
+              </ul>
+            </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          </div>
+        </div>
+    </div>
+
+
+<div class="col-md-3 col-sm-6">
+    <div class="x_panel">
+          <h2 class="line_30">Current month</h2>
+          <table class="countries_list">
+            <tbody>
+              <tr>
+                <td>Applications</td>
+                <td class="fs15 fw700 text-right">{{month_execution.applicants}}</td>
+              </tr>
+              <tr>
+                <td>Accepted</td>
+                <td class="fs15 fw700 text-right">{{month_execution.accepted}}</td>
+              </tr>
+              <tr>
+                <td>Approved</td>
+                <td class="fs15 fw700 text-right">{{month_execution.approved}}</td>
+              </tr>
+              <tr>
+                <td>Realized</td>
+                <td class="fs15 fw700 text-right">{{month_execution.realized}}</td>
+              </tr>
+              <tr>
+                <td>Completed</td>
+                <td class="fs15 fw700 text-right">{{month_execution.completed}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+
+<div class="col-md-3 col-sm-6">
+    <div class="x_panel">
+          <h2 class="line_30">Current quarter</h2>
+          <table class="countries_list">
+            <tbody>
+              <tr>
+                <td>Applications</td>
+                <td class="fs15 fw700 text-right">{{quarter_execution.applicants}}</td>
+              </tr>
+              <tr>
+                <td>Accepted</td>
+                <td class="fs15 fw700 text-right">{{quarter_execution.accepted}}</td>
+              </tr>
+              <tr>
+                <td>Approved</td>
+                <td class="fs15 fw700 text-right">{{quarter_execution.approved}}</td>
+              </tr>
+              <tr>
+                <td>Realized</td>
+                <td class="fs15 fw700 text-right">{{quarter_execution.realized}}</td>
+              </tr>
+              <tr>
+                <td>Completed</td>
+                <td class="fs15 fw700 text-right">{{quarter_execution.completed}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+
+<div class="col-md-3 col-sm-6">
+    <div class="x_panel">
+          <h2 class="line_30">Productivity</h2>
+          <table class="countries_list">
+            <tbody>
+              <tr>
+                <td>1 approval</td>
+                <td class="fs15 fw700 text-right">{{tm_performance.1}}</td>
+              </tr>
+              <tr>
+                <td>2 approvals</td>
+                <td class="fs15 fw700 text-right">{{tm_performance.2}}</td>
+              </tr>
+              <tr>
+                <td>3 approvals</td>
+                <td class="fs15 fw700 text-right">{{tm_performance.3}}</td>
+              </tr>
+              <tr>
+                <td>4+ approvals</td>
+                <td class="fs15 fw700 text-right">{{tm_performance.4}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<!--
+
+<div class="col-md-10 col-sm-8 col-xs-12">
+    <div class="x_panel">
+
+      <div class="x_title">
+        <h1><i class="fa fa-money"></i> Finance scoreboard <i class="fa fa-money"></i></h1>
+        
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="x_content">
+        <div style="height: 50px" class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{finance.executed}}" aria-valuemin="0" aria-valuemax="{{finance.planned}}" style="size:20px; width: {% widthratio finance.executed finance.planned 100 %}%">
+                {{finance.executed}}/{{finance.planned}} ৳
+            </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+-->
+<!--
+<div class="col-md-3 col-xs-12 widget widget_tally_box">
+    <div class="x_panel fixed_height_390">
+      <div class="x_content">
+
+        <div class="flex">
+          <ul class="list-inline widget_profile_box">
+            <li>
+              <a>
+                <i class="fa fa-star"></i>
+              </a>
+            </li>
+            <li>
+              <img src="https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/18157027_10213462905513684_2763096803963432682_n.jpg?_nc_cat=0&_nc_eui2=v1%3AAeHQfFLicAE8jQrxW8XU5jrXtM93wBm4-XtNBfhQbHqKTT6_r2-RIW7d7S4WJQ0RsKgS9txb9aFOtZdW9jT8OkwxGw4ImalaFQ3ukq_lXxZLHA&oh=5240166531ccb37130790354b9e156b5&oe=5B678302" alt="..." class="img-circle profile_img">
+            </li>
+            <li>
+              <a>
+                <i class="fa fa-star"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <h3 class="name">Asitima</h3>
+
+        <div class="flex">
+          <ul class="list-inline count2">
+            <li>
+              <h3>123</h3>
+              <span>Articles</span>
+            </li>
+            <li>
+              <h3>1234</h3>
+              <span>Followers</span>
+            </li>
+            <li>
+              <h3>123</h3>
+              <span>Following</span>
+            </li>
+          </ul>
+        </div>
+        <p>
+          If you've decided to go in development mode and tweak all of this a bit, there are few things you should do.
+        </p>
+      </div>
+    </div>
+  </div>
+-->
+<!--
+    <div class="col-md-6 col-sm-12 col-xs-12">
+      <div class="dashboard_graph">
+        <div class="row x_title">
+            <h3>Rendimiento <small>Realizaciones</small></h3>
+        </div>
+
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+          <div style="width: 100%;">
+            <div id="canvas_dahs" class="demo-placeholder" style="width: 100%; height: 270px; padding: 0px; position: relative;"></div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="sidebar-widget">
+                <h4>Realizaciones (mes actual)</h4>
+                <canvas width="150" height="80" id="month_realized_gauge" class="" style="width: 160px; height: 100px;"></canvas>
+                <div class="goal-wrapper">
+                  <span id="month_realized_text" class="gauge-value pull-left">0</span>
+                  <span id="goal-text" class="goal-value pull-right">{{current_month.planned.realized}}</span>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-12 col-xs-12">
+      <div class="dashboard_graph">
+        <div class="row x_title">
+            <h3>Rendimiento <small>Approved</small></h3>
+        </div>
+
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+          <div style="width: 100%;">
+            <div id="flot_approved" class="demo-placeholder" style="width: 100%; height: 270px; padding: 0px; position: relative;"></div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="sidebar-widget">
+                <h4>Approved</h4> (mes actual)</h4>
+                <canvas width="150" height="80" id="month_approved_gauge" class="" style="width: 160px; height: 100px;"></canvas>
+                <div class="goal-wrapper">
+                  <span id="month_approved_text" class="gauge-value pull-left">0</span>
+                  <span id="goal-text" class="goal-value pull-right">{{current_month.planned.approved}}</span>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+<div class="col-md-6 col-sm-12">
+<div class="x_panel">
+{% if uncontacted %}
+<h4>EPs sin contactar: {{uncontacted}}. <a href="https://experience.aiesec.org/#/people?registered%5Bfrom%5D=2016-01-01&contacted=false&home_committee={{officeID}}">Ver en EXPA</a></h4>
+<h4><a href="http://platform.aiesecandes.org/app/tools/{{office_name}}/application_count/">Ver número de aplicaciones a oportunidades por EP durante la semana pasada</a></h4>
+{% endif %}
+{% if weekRegisteredAnalytics %}
+    <div class="col-md-6 col-sm-12">
+    <h3>Conversión registrados-contactados durante la semana</h3>
+    <table class="table table-responsive table-striped table-hover">
+        <tr>
+           <td>Registrados</td>
+           <td>{{weekRegisteredAnalytics.total}}</td>
+        </tr> 
+        <tr>
+           <td>Contactados</td>
+           <td>{{weekRegisteredAnalytics.nContacted}}</td>
+        </tr> 
+        <tr>
+           <td>Porcentaje</td>
+           <td>{{weekRegisteredAnalytics.rate}}%</td>
+        </tr> 
+        <tr>
+           <td>Gap</td>
+           <td>{{weekRegisteredAnalytics.gap}}</td>
+        </tr> 
+    </table>
+    </div>
+{% endif %}
+{% if weekContactedAnalytics %}
+    <div class="col-md-6 col-sm-12">
+    <h3>Conversión contactados-entrevistados durante la semana</h3>
+    <table class="table table-responsive table-striped table-hover">
+        <tr>
+           <td>Contactados</td>
+           <td>{{weekContactedAnalytics.total}}</td>
+        </tr> 
+        <tr>
+           <td>Entrevistados</td>
+           <td>{{weekContactedAnalytics.nContacted}}</td>
+        </tr> 
+        <tr>
+           <td>Porcentaje</td>
+           <td>{{weekContactedAnalytics.rate}}%</td>
+        </tr> 
+        <tr>
+           <td>Gap</td>
+           <td>{{weekContactedAnalytics.gap}}</td>
+        </tr> 
+    </table>
+    </div>
+{% endif %}
+</div>
+</div>
+-->
+
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static "gentelella/vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"%}"></script>
+<!-- Flot -->
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.pie.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.time.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.stack.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.resize.js" %}"></script>
+<!-- Flot plugins -->
+<script src="{% static "gentelella/production/js/flot/jquery.flot.orderBars.js" %}"></script>
+<script src="{% static "gentelella/production/js/flot/jquery.flot.spline.js" %}"></script>
+<script src="{% static "gentelella/production/js/flot/curvedLines.js" %}"></script>
+
+<!-- gauge.js -->
+<script src="{% static "gentelella/vendors/gauge.js/dist/gauge.min.js" %}"></script>
+<script>
+      $(function() {
+        $('.chart').easyPieChart({
+          easing: 'easeOutElastic',
+          delay: 3000,
+          barColor: '#26B99A',
+          trackColor: '#fff',
+          scaleColor: false,
+          lineWidth: 20,
+          trackWidth: 16,
+          lineCap: 'butt',
+          onStep: function(from, to, percent) {
+            $(this.el).find('.percent').text(Math.round(percent));
+          }
+        });
+      });
+</script>
+<!-- Flot. Para los gráficos de desempeño en matches y realizes -->
+    <script>
+      $(document).ready(function() {
+        var achieved_realized = [
+        {% for goal in achieved_monthly %}
+          [gd(2016, {{goal.month}}), {{goal.realized}}],
+        {% endfor %}
+        ];
+
+        var planned_realized = [
+        {% for goal in planned_monthly %}
+          [gd({{goal.year}}, {{goal.month}}), {{goal.realized}}],
+        {% endfor %}
+        ];
+
+        var achieved_approved = [
+        {% for goal in achieved_monthly %}
+          [gd(2016, {{goal.month}}), {{goal.approved}}],
+        {% endfor %}
+        ];
+
+        var planned_approved = [
+        {% for goal in planned_monthly %}
+          [gd({{goal.year}}, {{goal.month}}), {{goal.approved}}],
+        {% endfor %}
+        ];
+
+        var flot_graph_settings = {
+          series: {
+            lines: {
+              show: false,
+              fill: true
+            },
+            splines: {
+              show: true,
+              tension: 0.4,
+              lineWidth: 1,
+              fill: 0.4
+            },
+            points: {
+              radius: 0,
+              show: true
+            },
+            shadowSize: 2
+          },
+          grid: {
+            verticalLines: true,
+            hoverable: true,
+            clickable: true,
+            tickColor: "#d5d5d5",
+            borderWidth: 1,
+            color: '#fff'
+          },
+          colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
+          xaxis: {
+            tickColor: "rgba(51, 51, 51, 0.06)",
+            mode: "time",
+            tickSize: [1, "month"],
+            //tickLength: 10,
+            axisLabel: "Date",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 12,
+            axisLabelFontFamily: 'Verdana, Arial',
+            axisLabelPadding: 10
+          },
+          yaxis: {
+            ticks: 8,
+            tickColor: "rgba(51, 51, 51, 0.06)",
+          },
+          tooltip: false
+        };
+
+        $("#canvas_dahs").length && $.plot(
+            $("#canvas_dahs"), 
+            [achieved_realized, planned_realized],
+            flot_graph_settings
+        );
+
+        $("#flot_approved").length && $.plot(
+            $("#flot_approved"),
+            [achieved_approved, planned_approved],
+            flot_graph_settings
+        );
+
+        function gd(year, month) {
+          return new Date(year, month - 1, 1).getTime();
+        }
+      });
+    </script>
+<!-- /Flot -->
+<!-- gauge.js -->
+    <script>
+      var opts = {
+        lines: 12,
+        angle: 0,
+        lineWidth: 0.4,
+        pointer: {
+          length: 0.75,
+          strokeWidth: 0.042,
+          color: '#1D212A'
+        },
+        limitMax: 'false',
+        colorStart: '#1ABC9C',
+        colorStop: '#1ABC9C',
+        strokeColor: '#F0F3F3',
+        generateGradient: true
+      };
+      //Para las realizaciones
+      var target = document.getElementById('month_realized_gauge'),
+          realized_gauge = new Gauge(target).setOptions(opts);
+
+      realized_gauge.maxValue = {{current_month.planned.realized}};
+      realized_gauge.animationSpeed = 32;
+      realized_gauge.set(1);
+      realized_gauge.set({{current_month.achieved.realized}});
+      realized_gauge.setTextField(document.getElementById("month_realized_text"));
+      //Para los approved
+      var target = document.getElementById('month_approved_gauge'),
+          approved_gauge = new Gauge(target).setOptions(opts);
+
+      approved_gauge.maxValue = {{current_month.planned.approved}};
+      approved_gauge.animationSpeed = 32;
+      approved_gauge.set(1);
+      approved_gauge.set({{current_month.achieved.approved}});
+      approved_gauge.setTextField(document.getElementById("month_approved_text"));
+    </script>
+
+
+{% endblock %}

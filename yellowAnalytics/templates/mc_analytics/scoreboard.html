@@ -1,0 +1,115 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+{% load customTags %}
+
+{% block title %}Scoreboard AIESEC {{office_name}}{% endblock %}
+{% block page-header %}Scoreboard AIESEC {{office_name}}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<div class="progress">
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{achieved.total.realized}}" aria-valuemin="0" aria-valuemax="{{planned.total.realized}}" style="width: {% widthratio achieved.total.realized planned.total.realized 100 %}%">
+        {{achieved.total.realized}}/{{planned.total.realized}}
+    </div>
+</div>
+{% for product in products %}
+{% with area_achieved=achieved|getattribute:product area_planned=planned|getattribute:product %}
+    <a href="{% url 'analytics:area_scoreboard' office_name=office_name programa=product %}">
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+            <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+            <div class="count">{{area_achieved.realized}}/{{area_planned.realized}}</div>
+            <h3>{{product}}</h3>
+            <p>Matches: {{area_achieved.approved}}/{{area_planned.approved}}</p>
+        </div>
+    </div>
+    </a>
+{% endwith %}
+{% endfor %}
+    <div class="col-md-3 col-xs-12 widget widget_tally_box">
+            <div class="x_panel fixed_height_390">
+              <div class="x_title">
+                <h2>Rendimiento<small>(approved)</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
+                  </li>
+                </ul>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="x_content">
+                <div style="text-align: center; margin-bottom: 17px">
+                  <ul class="verticle_bars list-inline">
+                    {% for product in products %}
+                    {% with area_achieved=achieved|getattribute:product area_planned=planned|getattribute:product %}
+                    <li>
+                      <div class="progress vertical progress_wide bottom">
+                        <div class="progress-bar progress-bar-success" role="progressbar" data-transitiongoal="{% widthratio area_achieved.approved area_planned.approved 100 %}" style="height: {% widthratio area_achieved.approved area_planned.approved 100 %}%;" aria-valuenow="{% widthratio area_achieved.approved area_planned.approved 100 %}"></div>
+                      </div>
+                      {{product}}
+                    </li>
+                    {% endwith %}
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="divider"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-xs-12 widget widget_tally_box">
+            <div class="x_panel fixed_height_390">
+              <div class="x_title">
+                <h2>Rendimiento<small>(realized)</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
+                  </li>
+                </ul>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="x_content">
+                <div style="text-align: center; margin-bottom: 17px">
+                  <ul class="verticle_bars list-inline">
+                    {% for product in products %}
+                    {% with area_achieved=achieved|getattribute:product area_planned=planned|getattribute:product %}
+                    <li>
+                      <div class="progress vertical progress_wide bottom">
+                        <div class="progress-bar progress-bar-success" role="progressbar" data-transitiongoal="{% widthratio area_achieved.realized area_planned.realized 100 %}" style="height: {% widthratio area_achieved.realized area_planned.realized 100 %}%;" aria-valuenow="{% widthratio area_achieved.realized area_planned.realized 100 %}"></div>
+                      </div>
+                      {{product}}
+                    </li>
+                    {% endwith %}
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="divider"></div>
+            </div>
+        </div>
+    </div>
+
+<div class="col-md-6 col-sm-12">
+<div class="x_panel">
+    {% for metric, values in rankings.items %}
+    <h2>{{metric|title}}</h2>
+    {% for ranking, value in values %}
+    <div class="col-sm-4 col-xs-12">
+        <div class="well text-center">
+            <h4>{{ranking|title}}</h4>    
+            <a href="{% url 'analytics:ranking' office_name=office_name programa='total' ranking=ranking metric=metric%}">
+            <button type="button" class="btn btn-warning btn-circle btn-xl pull-center">
+                <span>{{value}}</span>
+            </button>
+            </a>
+        </div> 
+    </div>
+    {% endfor %}
+    {% endfor %}
+</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

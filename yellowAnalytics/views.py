@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django_expa.expaApi import ExpaApi
+from django_expa.expaApi import ExpaApi, APIUnavailableException
 from django_podio.api import PodioApi
 from .models import LC, MonthlyGoal, MonthlyAchievement, Office, LogrosPrograma, Program
 from . import tools
@@ -85,7 +85,7 @@ class GetAreaScoreboard(TemplateView):
     template_name = "analytics/area_scoreboard.html"
     def get_context_data(self, **kwargs):
         context = super(GetAreaScoreboard, self).get_context_data(**kwargs)
-        api = ExpaApi()
+        api = ExpaApi(account='camilo.forero@aiesec.net')
         office_name = self.kwargs['office_name']
         context['office_name'] = office_name
         office = Office.objects.select_related('superoffice', 'superoffice__superoffice').get(name=office_name.replace('_', ' '))
@@ -139,7 +139,7 @@ class GetAreaScoreboard(TemplateView):
             #Context data for total uncontacted EPs
             try:
                 context['uncontacted'] = api.getUncontactedEPs(officeID)['total']
-            except ValueError as e:
+            except APIUnavailableException as e:
                 print e #TODO: Logging?
                 context['uncontacted'] = "EXPA Error"
             #Context data for Weekly registered/contacted and contacted/interviewed analytics
@@ -159,7 +159,7 @@ class GetAreaScoreboard(TemplateView):
                     'rate':contacted_rate*100,
                     'gap':weekRegisteredContacted - weekRegisteredEPs['total']
                 }
-            except ValueError as e:
+            except APIUnavailableException as e:
                 context['weekRegisteredAnalytics'] = {
                     'total':'EXPA Error',
                     'nContacted':'EXPA Error',
@@ -183,7 +183,7 @@ class GetAreaScoreboard(TemplateView):
                     'rate':interviewed_rate*100,
                     'gap':weekContactedInterviewed - weekContactedEPs['total']
                 }
-            except ValueError as e:#TODO: Mover a la EXPA API
+            except APIUnavailableException as e:#TODO: Mover a la EXPA API
                 context['weekContactedAnalytics'] = {
                     'total':'EXPA Error',
                     'nContacted':'EXPA Error',

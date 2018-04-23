@@ -1,0 +1,61 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+
+{% block title %}Índice{% endblock %}
+{% block page-header %}Bienvenidos!{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<div class="col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Por favor selecciona tu comité local</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <form class="form-horizontal form-label-left">
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-xs-12">LC</label>
+                    <select id="lc_select" class="select2_single form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                        <option></option>
+                        <option>COLOMBIA</option>
+                        {% for lc in lcs %}
+                        <option>{{lc.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" style="width: 336px;">
+                        <span class="selection">
+                            <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-labelledby="select2-jwcn-container">
+                                <span class="select2-selection__rendered" id="select2-jwcn-container">
+                                    <span class="select2-selection__placeholder">Selecciona un LC</span>
+                                </span>
+                                <span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span>
+                            </span>
+                        </span>
+                        <span class="dropdown-wrapper" aria-hidden="true"></span>
+                    </span>
+                </div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    <button class="btn btn-primary" onclick="GoToScoreboard()">Scoreboard</button>
+                    <button class="btn btn-success" onclick="GoToRankings()">Rankings</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static "gentelella/vendors/select2/dist/js/select2.full.min.js"%}"></script>
+<script>
+function GoToScoreboard()
+{
+    window.open('http://platform.aiesecandes.org/app/analytics/' + $("#lc_select option:selected").text() + '/scoreboard/');
+}
+function GoToRankings()
+{
+    window.open('http://platform.aiesecandes.org/app/analytics/' + $("#lc_select option:selected").text() + '/ranking/');
+}
+</script>
+{% endblock %}

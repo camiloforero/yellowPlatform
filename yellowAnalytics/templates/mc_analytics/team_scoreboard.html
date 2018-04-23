@@ -1,0 +1,294 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+
+{% block title %}Team scoreboard: AIESEC in {{office_name}}{% endblock %}
+{% block page-header %}Team scoreboard: AIESEC in {{office_name}}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+
+<div class="col-md-2 col-sm-4 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Performance filter</h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+    </div>
+        <ul class="list-unstyled top_profiles scroll-view" style="height:100%">
+        {% for team in teams %}
+          <li class="media event" id="{{team.podio_id}}" onClick="filterPerformance(this.id)">
+            <a class="pull-left border-aero">
+              <img src="http://platform.aiesecandes.org/app/media/{{team.team_picture}}" alt="..." class="img-circle img-responsive" style="width: 40px"></img>
+            </a>
+            <div class="media-body">
+              <a class="title">{{team.team_name}}</a>
+            </div>
+          </li>
+        {% endfor %}
+          <li class="media event active" id="all" onClick="filterPerformance(this.id)">
+            <a class="pull-left border-green profile_thumb" style="height:40px, width:40px">
+              <i class="fa fa-user green" style="font-size=20px"></i>
+            </a>
+            <div class="media-body">
+              <a class="title">ALL</a>
+              </p>
+            </div>
+          </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="col-md-8 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h1>Performance</h1>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+
+          <div class="x_content">
+            <div class="row">
+      <div class="col-xs-2">
+        <h2>{{wig.name|capfirst}}</h2>
+        <div class="clearfix"></div>
+      </div>
+        <div class="col-xs-10">
+            <div style="height: 30px" class="progress">
+                <div id="approved_percent" class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{wig.executed}}" aria-valuemin="0" aria-valuemax="{{wig.planned}}" style="font-size:16px; color:black; padding-top:8px; width: {% widthratio wig.executed wig.planned 100 %}%">
+                    {{wig.executed}}/{{wig.planned}}
+                </div>
+            </div>
+        
+        </div>
+            {% for metric in year_metrics %}
+            <div class="col-lg-3 col-xs-6">
+
+            <div style="text-align: center; margin-bottom: 17px">
+                <h3 class="name">{{metric.name|capfirst}}</h3>
+              <span class="chart" id="{{metric.name}}_percent" data-percent="{% widthratio metric.executed metric.planned 100 %}">
+                                  <span class="percent" id="{{metric.name}}_percent2">{% widthratio metric.executed metric.planned 100 %}</span>
+              <canvas height="110" width="110"></canvas></span>
+            </div>
+            <div class="pie_bg" style="text-align: center; display: none; margin-bottom: 17px">
+              <canvas id="canvas_doughnut" height="130"></canvas>
+            </div>
+            <div class="flex">
+              <ul class="list-inline count2">
+                <li>
+                  <h3 id="{{metric.name}}_planned">{{metric.planned}}</h3>
+                  <span>Planned</span>
+                </li>
+                <li>
+                  <h3 id="{{metric.name}}_executed" >{{metric.executed}}</h3>
+                  <span>Executed</span>
+                </li>
+                <li>
+                  <h3 id="{{metric.name}}_gap" >{{metric.gap}}</h3>
+                  <span>Gap</span>
+                </li>
+              </ul>
+            </div>
+            </div>
+            {% endfor %}
+          </div>
+
+      </div>
+    </div>
+</div>
+
+<div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-calendar"></i>
+        </div>
+        <div class="count">{{countdown}}</div>
+
+        <h3>Days<br/>left!</h3>
+    </div>
+</div>
+
+
+
+
+<!--
+
+<div class="col-md-10 col-sm-8 col-xs-12">
+    <div class="x_panel">
+
+      <div class="x_title">
+        <h1><i class="fa fa-money"></i> Finance scoreboard <i class="fa fa-money"></i></h1>
+        
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="x_content">
+        <div style="height: 50px" class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{finance.executed}}" aria-valuemin="0" aria-valuemax="{{finance.planned}}" style="size:20px; width: {% widthratio finance.executed finance.planned 100 %}%">
+                {{finance.executed}}/{{finance.planned}} ৳
+            </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+-->
+<!--
+<div class="col-md-3 col-xs-12 widget widget_tally_box">
+    <div class="x_panel fixed_height_390">
+      <div class="x_content">
+
+        <div class="flex">
+          <ul class="list-inline widget_profile_box">
+            <li>
+              <a>
+                <i class="fa fa-star"></i>
+              </a>
+            </li>
+            <li>
+              <img src="https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/18157027_10213462905513684_2763096803963432682_n.jpg?_nc_cat=0&_nc_eui2=v1%3AAeHQfFLicAE8jQrxW8XU5jrXtM93wBm4-XtNBfhQbHqKTT6_r2-RIW7d7S4WJQ0RsKgS9txb9aFOtZdW9jT8OkwxGw4ImalaFQ3ukq_lXxZLHA&oh=5240166531ccb37130790354b9e156b5&oe=5B678302" alt="..." class="img-circle profile_img">
+            </li>
+            <li>
+              <a>
+                <i class="fa fa-star"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <h3 class="name">Asitima</h3>
+
+        <div class="flex">
+          <ul class="list-inline count2">
+            <li>
+              <h3>123</h3>
+              <span>Articles</span>
+            </li>
+            <li>
+              <h3>1234</h3>
+              <span>Followers</span>
+            </li>
+            <li>
+              <h3>123</h3>
+              <span>Following</span>
+            </li>
+          </ul>
+        </div>
+        <p>
+          If you've decided to go in development mode and tweak all of this a bit, there are few things you should do.
+        </p>
+      </div>
+    </div>
+  </div>
+-->
+<!--
+    <div class="col-md-6 col-sm-12 col-xs-12">
+      <div class="dashboard_graph">
+        <div class="row x_title">
+            <h3>Rendimiento <small>Realizaciones</small></h3>
+        </div>
+
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+          <div style="width: 100%;">
+            <div id="canvas_dahs" class="demo-placeholder" style="width: 100%; height: 270px; padding: 0px; position: relative;"></div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="sidebar-widget">
+                <h4>Realizaciones (mes actual)</h4>
+                <canvas width="150" height="80" id="month_realized_gauge" class="" style="width: 160px; height: 100px;"></canvas>
+                <div class="goal-wrapper">
+                  <span id="month_realized_text" class="gauge-value pull-left">0</span>
+                  <span id="goal-text" class="goal-value pull-right">{{current_month.planned.realized}}</span>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-12 col-xs-12">
+      <div class="dashboard_graph">
+        <div class="row x_title">
+            <h3>Rendimiento <small>Approved</small></h3>
+        </div>
+
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+          <div style="width: 100%;">
+            <div id="flot_approved" class="demo-placeholder" style="width: 100%; height: 270px; padding: 0px; position: relative;"></div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="sidebar-widget">
+                <h4>Approved</h4> (mes actual)</h4>
+                <canvas width="150" height="80" id="month_approved_gauge" class="" style="width: 160px; height: 100px;"></canvas>
+                <div class="goal-wrapper">
+                  <span id="month_approved_text" class="gauge-value pull-left">0</span>
+                  <span id="goal-text" class="goal-value pull-right">{{current_month.planned.approved}}</span>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+-->
+
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static "gentelella/vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"%}"></script>
+<script>
+      $(function() {
+        $('.chart').easyPieChart({
+          easing: 'easeOutElastic',
+          delay: 3000,
+          barColor: '#26B99A',
+          trackColor: '#fff',
+          scaleColor: false,
+          lineWidth: 20,
+          trackWidth: 16,
+          lineCap: 'butt',
+          onStep: function(from, to, percent) {
+            $(this.el).find('.percent').text(Math.round(percent));
+          }
+        });
+      });
+</script>
+<!-- For the customized self-made performance selector -->
+<script>
+  var performance = {{metrics_json|safe}};
+  function filterPerformance(id) {
+    pie_stats = ['applicants', 'accepted', 'realized', 'completed']
+    for (stat_index in pie_stats) {
+        stat = pie_stats[stat_index];
+        $('#' + stat + '_percent').data('easyPieChart').update(performance[id][stat].executed/performance[id][stat].planned * 100);
+        planned = document.getElementById(stat + '_planned')
+        planned.innerHTML = performance[id][stat].planned
+        executed = document.getElementById(stat + '_executed')
+        executed.innerHTML = performance[id][stat].executed
+        gap = document.getElementById(stat + '_gap')
+        gap.innerHTML = performance[id][stat].gap
+
+    };
+    wig_bar = document.getElementById('approved_percent')
+    percent = performance[id]['approved'].executed/performance[id]['approved'].planned * 100
+    wig_bar.style.width = percent + '%'
+    wig_bar.innerHTML = performance[id]['approved'].executed + '/' + performance[id]['approved'].planned
+  }
+</script>
+
+
+{% endblock %}

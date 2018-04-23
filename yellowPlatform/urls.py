@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^podio/', include('django_podio.urls', namespace='podio')),
     url(r'^expa/', include('django_expa.urls', namespace='expa')),
     url(r'^analytics/', include('yellowAnalytics.urls', namespace='analytics')),
+    url(r'^mc_analytics/', include('yellowAnalytics.mc_urls', namespace='mc_analytics')),
     url(r'^tools/', include('yellowTools.urls', namespace='tools')),
     url(r'^voting/', include('yellowVoting.urls', namespace='voting')),
     url(r'^admin/', include(admin.site.urls)),

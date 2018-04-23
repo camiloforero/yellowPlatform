@@ -1,0 +1,201 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+
+{% block title %}{% endblock %}
+{% block page-header %}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+        <div class="count">4/6</div>
+        <h3>Capacitaciones presenciales</h3>
+    </div>
+</div>
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+        <div class="count">26/50</div>
+        <h3>Booklets educativos en plataforma</h3>
+    </div>
+</div>
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+        <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+        <div class="count">5/12</div>
+        <h3>Áreas con scoreboard definido</h3>
+    </div>
+</div>
+
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 widget widget_tally_box">
+    <div class="x_panel">
+          <div class="x_title">
+            <h2>Correo AIESECo</h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
+            <div style="text-align: center; margin-bottom: 17px">
+              <span class="chart" data-percent="{%widthratio total.aiesec_mail total.total 100%}">
+                                  <span class="percent">{%widthratio total.aiesec_mail total.total 100%}</span>
+                <canvas height="110" width="110"></canvas>
+                <canvas height="110" width="110"></canvas></span>
+            </div>
+            <div class="pie_bg" style="text-align: center; display: none; margin-bottom: 17px">
+              <canvas id="canvas_doughnut" height="130"></canvas>
+            </div>
+            <div class="flex">
+              <ul class="list-inline count2">
+                <li>
+                  <h3>{{total.total}}</h3>
+                  <span>Total</span>
+                </li>
+                <li>
+                  <h3>{{total.aiesec_mail}}</h3>
+                  <span>Actual</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+<div class="col-md-3 col-xs-12 widget widget_tally_box">
+    <div class="x_panel">
+          <div class="x_title">
+            <h2>Plan Carrera</h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
+            <div style="text-align: center; margin-bottom: 17px">
+              <span class="chart" data-percent="{%widthratio total.career_plan total.total 100%}">
+                                  <span class="percent">{%widthratio total.career_plan total.total 100%}</span>
+                <canvas height="110" width="110"></canvas>
+                <canvas height="110" width="110"></canvas></span>
+            </div>
+            <div class="pie_bg" style="text-align: center; display: none; margin-bottom: 17px">
+              <canvas id="canvas_doughnut" height="130"></canvas>
+            </div>
+            <div class="flex">
+              <ul class="list-inline count2">
+                <li>
+                  <h3>{{total.total}}</h3>
+                  <span>Total</span>
+                </li>
+                <li>
+                  <h3>{{total.career_plan}}</h3>
+                  <span>Actual</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4 col-sm-3 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+            <h2>Tareas <small>Done/not done</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div class="">
+            <ul class="to_do">
+              <li>
+                <p>
+                  <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>Empezar a hacer los reportes semanales de la tracking tool</p>
+              </li>
+              <li>
+                <p>
+                  <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>Lanzamiento de la herramienta de Plan Carrera</p>
+              </li>
+              <li>
+                <p>
+                  <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>Lanzamiento de la herramienta de Recursos Educativos</p>
+              </li>
+              <li>
+                <p>
+                  <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>Lanzamiento del booklet de transición del semestre pasado</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="col-md-6 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Miembros con plan carrera en plataforma</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Area</th>
+                    <th>Miembros</th>
+                    <th>% con correo AIESECo</th>
+                    <th>% con plan carrera</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for area, data in total_area.items %}
+                <tr>
+                    <td>{{area}}</td>
+                    <td>{{data.total}}</td>
+                    <td>{% widthratio data.aiesec_mail data.total 100 %}%</td>
+                    <td>0{% widthratio data.career_plan data.total 100 %}%</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static "gentelella/vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"%}"></script>
+<script>
+      $(function() {
+        $('.chart').easyPieChart({
+          easing: 'easeOutElastic',
+          delay: 3000,
+          barColor: '#26B99A',
+          trackColor: '#fff',
+          scaleColor: false,
+          lineWidth: 20,
+          trackWidth: 16,
+          lineCap: 'butt',
+          onStep: function(from, to, percent) {
+            $(this.el).find('.percent').text(Math.round(percent));
+          }
+        });
+      });
+</script>
+{% endblock %}

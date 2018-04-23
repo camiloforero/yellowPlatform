@@ -1,0 +1,33 @@
+{% extends 'yellowPlatform/base.html' %}
+{% load customTags %}
+{% load staticfiles %}
+
+{% block title %}{{ranking|capfirst}} ranking for {{programa|upper}}{% endblock %}
+{% block page-header %}{{ranking|capfirst}} ranking for {{programa|upper}}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<table class="table table-responsive table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Ranking</th>
+            <th>LC</th>
+            <th>MC</th>
+            <th>Desempeño (realizaciones)</th>
+            <th>Desempeño (approved)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lc in lcs %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{lc.office__name}}</td>
+            <td>{{lc.office__superoffice__name}}</td>
+            <td>{{lc.realized}}</td>
+            <td>{{lc.approved}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+{% block scripts %}{% endblock %}

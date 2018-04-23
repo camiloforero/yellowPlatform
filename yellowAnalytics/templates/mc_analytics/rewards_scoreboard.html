@@ -1,0 +1,224 @@
+{% extends 'yellowPlatform/base_wide.html' %}
+{% load staticfiles %}
+
+{% block title %}Rewards: AIESEC in Bangladesh{{office_name}}{% endblock %}
+{% block page-header %}Rewards: AIESEC in Bangladesh {{office_name}}{% endblock %}
+{% block body-class %}{% endblock %}
+{% block body %}
+<div class="col-sm-6 col-xs-12">
+    <img class="img img-responsive" src="http://platform.aiesecandes.org/app/media/RNRPOST1.001.jpeg"/>
+</div>
+<div class="col-sm-6 col-xs-12">
+    <img class="img img-responsive" src="http://platform.aiesecandes.org/app/media/RNRPOST2.001.jpeg"/>
+</div>
+{% for team in teams %}
+<div class="col-md-3 col-sm-6 col-xs-12 widget widget_tally_box">
+  <div class="x_panel fixed_height_390">
+    <div class="x_content">
+
+          <div class="row">
+            <div class="col-xs-6">
+              <h4 style="text-align:center">{{team.name}}</h4>
+            </div>
+            <div class="col-xs-6">
+              <img src="http://platform.aiesecandes.org/app/media/{{team.picture}}" alt="..." class="img-circle img-responsive">
+            </div>
+          </div>
+        <div class="clearfix"></div>
+
+        <div style="font-family: Lato, Helvetica, sans-serif; font-size:15px" class="row">
+          <table class="table">
+          <tbody>
+            <tr>
+              <td>{{team.approvals}}</td>
+              <td>Approvals</td>
+              <td>{{team.approvals_pts}} pts</td>
+            </tr>
+            <tr>
+              <td>{{team.applicants}}</td>
+              <td>Aplicants</td>
+              <td>{{team.applicants_pts}} pts</td>
+            </tr>
+            <tr>
+              <td>{{team.contacted}}</td>
+              <td>Contacted</td>
+              <td>{{team.contacted_pts}} pts</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th>TOTAL</th>
+              <th>{{team.total}} pts</th>
+            </tr>
+          </tfoot>
+          </table>
+        </div>
+
+    </div>
+  </div>
+
+</div>
+{% endfor %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static "gentelella/vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"%}"></script>
+<!-- Flot -->
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.pie.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.time.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.stack.js" %}"></script>
+<script src="{% static "gentelella/vendors/Flot/jquery.flot.resize.js" %}"></script>
+<!-- Flot plugins -->
+<script src="{% static "gentelella/production/js/flot/jquery.flot.orderBars.js" %}"></script>
+<script src="{% static "gentelella/production/js/flot/jquery.flot.spline.js" %}"></script>
+<script src="{% static "gentelella/production/js/flot/curvedLines.js" %}"></script>
+
+<!-- gauge.js -->
+<script src="{% static "gentelella/vendors/gauge.js/dist/gauge.min.js" %}"></script>
+<script>
+      $(function() {
+        $('.chart').easyPieChart({
+          easing: 'easeOutElastic',
+          delay: 3000,
+          barColor: '#26B99A',
+          trackColor: '#fff',
+          scaleColor: false,
+          lineWidth: 20,
+          trackWidth: 16,
+          lineCap: 'butt',
+          onStep: function(from, to, percent) {
+            $(this.el).find('.percent').text(Math.round(percent));
+          }
+        });
+      });
+</script>
+<!-- Flot. Para los gráficos de desempeño en matches y realizes -->
+    <script>
+      $(document).ready(function() {
+        var achieved_realized = [
+        {% for goal in achieved_monthly %}
+          [gd(2016, {{goal.month}}), {{goal.realized}}],
+        {% endfor %}
+        ];
+
+        var planned_realized = [
+        {% for goal in planned_monthly %}
+          [gd({{goal.year}}, {{goal.month}}), {{goal.realized}}],
+        {% endfor %}
+        ];
+
+        var achieved_approved = [
+        {% for goal in achieved_monthly %}
+          [gd(2016, {{goal.month}}), {{goal.approved}}],
+        {% endfor %}
+        ];
+
+        var planned_approved = [
+        {% for goal in planned_monthly %}
+          [gd({{goal.year}}, {{goal.month}}), {{goal.approved}}],
+        {% endfor %}
+        ];
+
+        var flot_graph_settings = {
+          series: {
+            lines: {
+              show: false,
+              fill: true
+            },
+            splines: {
+              show: true,
+              tension: 0.4,
+              lineWidth: 1,
+              fill: 0.4
+            },
+            points: {
+              radius: 0,
+              show: true
+            },
+            shadowSize: 2
+          },
+          grid: {
+            verticalLines: true,
+            hoverable: true,
+            clickable: true,
+            tickColor: "#d5d5d5",
+            borderWidth: 1,
+            color: '#fff'
+          },
+          colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
+          xaxis: {
+            tickColor: "rgba(51, 51, 51, 0.06)",
+            mode: "time",
+            tickSize: [1, "month"],
+            //tickLength: 10,
+            axisLabel: "Date",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 12,
+            axisLabelFontFamily: 'Verdana, Arial',
+            axisLabelPadding: 10
+          },
+          yaxis: {
+            ticks: 8,
+            tickColor: "rgba(51, 51, 51, 0.06)",
+          },
+          tooltip: false
+        };
+
+        $("#canvas_dahs").length && $.plot(
+            $("#canvas_dahs"), 
+            [achieved_realized, planned_realized],
+            flot_graph_settings
+        );
+
+        $("#flot_approved").length && $.plot(
+            $("#flot_approved"),
+            [achieved_approved, planned_approved],
+            flot_graph_settings
+        );
+
+        function gd(year, month) {
+          return new Date(year, month - 1, 1).getTime();
+        }
+      });
+    </script>
+<!-- /Flot -->
+<!-- gauge.js -->
+    <script>
+      var opts = {
+        lines: 12,
+        angle: 0,
+        lineWidth: 0.4,
+        pointer: {
+          length: 0.75,
+          strokeWidth: 0.042,
+          color: '#1D212A'
+        },
+        limitMax: 'false',
+        colorStart: '#1ABC9C',
+        colorStop: '#1ABC9C',
+        strokeColor: '#F0F3F3',
+        generateGradient: true
+      };
+      //Para las realizaciones
+      var target = document.getElementById('month_realized_gauge'),
+          realized_gauge = new Gauge(target).setOptions(opts);
+
+      realized_gauge.maxValue = {{current_month.planned.realized}};
+      realized_gauge.animationSpeed = 32;
+      realized_gauge.set(1);
+      realized_gauge.set({{current_month.achieved.realized}});
+      realized_gauge.setTextField(document.getElementById("month_realized_text"));
+      //Para los approved
+      var target = document.getElementById('month_approved_gauge'),
+          approved_gauge = new Gauge(target).setOptions(opts);
+
+      approved_gauge.maxValue = {{current_month.planned.approved}};
+      approved_gauge.animationSpeed = 32;
+      approved_gauge.set(1);
+      approved_gauge.set({{current_month.achieved.approved}});
+      approved_gauge.setTextField(document.getElementById("month_approved_text"));
+    </script>
+
+
+{% endblock %}

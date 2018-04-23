@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 import os
 
-@login_required
+#@login_required
 def media_xsendfile(request, path, document_root):
     response = HttpResponse()
     response['Content-Type'] = ''
