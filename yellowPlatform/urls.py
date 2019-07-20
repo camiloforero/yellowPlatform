@@ -21,13 +21,7 @@ from yellowPlatform.views import media_xsendfile
 
 urlpatterns = [
     url(r'^podio/', include('django_podio.urls', namespace='podio')),
-    url(r'^expa/', include('django_expa.urls', namespace='expa')),
-    url(r'^analytics/', include('yellowAnalytics.urls', namespace='analytics')),
-    url(r'^mc_analytics/', include('yellowAnalytics.mc_urls', namespace='mc_analytics')),
-    url(r'^tools/', include('yellowTools.urls', namespace='tools')),
-    url(r'^voting/', include('yellowVoting.urls', namespace='voting')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^admin/', admin.site.urls),
     url(r'^media\/(?P<path>.*)$', media_xsendfile, {
         'document_root': settings.MEDIA_ROOT,
          }),

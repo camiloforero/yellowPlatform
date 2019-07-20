@@ -1,5 +1,5 @@
 *.pyc
 *.swo
 *.swp
-yellowEnv/
+venv/
 google_private_key.json

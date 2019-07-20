@@ -45,30 +45,22 @@ INSTALLED_APPS = [
     'django_podio',
     'django_expa',
     'colorful',
-    'tinymce',
-    'anymail',
-    'django_wysiwyg',
     'widget_tweaks',
     'django_mailTemplates',
     'django_documents',
     'complex_hooks',
-    'yellowDatabase',
-    'yellowAnalytics',
-    'yellowTools',
-    'yellowVoting',
     'yellowCrons',
     'debug_toolbar',
 
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #'django.middleware.clickjacking.XFrameOptionsMiddleware', #TODO: Modificar en caso que sea necesario para negar unas y aceptar a otras
 ]
@@ -100,8 +92,7 @@ WSGI_APPLICATION = 'yellowPlatform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'natcoapp',
-        'HOST': 'localhost',
+        'NAME': 'trailblazers',
         'USER': 'camilo',
     }
 }
@@ -134,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'es-co'
+LANGUAGE_CODE = 'en-in'
 
 TIME_ZONE = 'UTC'
 
