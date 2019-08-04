@@ -3,3 +3,4 @@
 *.swp
 venv/
 google_private_key.json
+static/

@@ -29,7 +29,8 @@ DEBUG = True
 #FOr the debug toolbar use
 INTERNAL_IPS = ('201.216.19.248')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['34.93.138.81']
+
 
 
 # Application definition
@@ -93,7 +94,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'trailblazers',
-        'USER': 'camilo',
+        'USER': 'camilo_forero',
     }
 }
 
@@ -138,6 +139,8 @@ USE_TZ = True
 LOGIN_URL = '/app/login'
 LOGIN_REDIRECT_URL = '/app'
 
+LOGDIR = '/home/camilo_forero/logs/'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -150,13 +153,13 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/var/www/logs/debug.log',
+            'filename': LOGDIR + 'debug.log',
             'formatter': 'verbose'
         },
         'usage': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/var/www/logs/usage.log',
+            'filename': LOGDIR + 'usage.log',
             'formatter': 'verbose'
         },
         'console': {
@@ -183,7 +186,7 @@ LOGGING = {
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/html/static/'
+STATIC_ROOT = '/home/camilo_forero/static/'
 
 STATICFILES_FINDERS = (#Para django-bower
     'django.contrib.staticfiles.finders.FileSystemFinder',
